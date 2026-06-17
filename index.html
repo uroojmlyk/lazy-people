@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Lazy Panda Almanac — Existing Is Enough</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+
+<style>
+/* ============================================================
+   DESIGN TOKENS — warmer, softer, more "cute" tilt on the same
+   brutalist-newspaper bones (hard borders, offset shadows, ticker)
+   ============================================================ */
+:root{
+  --saffron:      #E8762E;
+  --saffron-2:    #F4A05C;
+  --saffron-soft: #FBD9B8;
+  --pink:         #E8849A;
+  --pink-soft:    #F7D7DF;
+  --green:        #2E7D4F;
+  --green-2:      #4FA873;
+  --ink:          #241407;
+  --ink-2:        #4A3220;
+  --ink-3:        #7A5F47;
+  --paper:        #FFF6E9;
+  --paper-2:      #FBEAD2;
+  --paper-3:      #F2D9B8;
+  --gold:         #D9A536;
+
+  --display:   'Bowlby One', 'Impact', sans-serif;
+  --condensed: 'Oswald', 'Arial Narrow', sans-serif;
+  --sans:      'Inter', -apple-system, system-ui, sans-serif;
+  --mono:      'JetBrains Mono', ui-monospace, monospace;
+
+  --max:    1280px;
+  --gutter: 56px;
+
+  --border:    2.5px solid var(--ink);
+  --shadow:    4px 4px 0 var(--ink);
+  --shadow-lg: 7px 7px 0 var(--ink);
+}
+@media (max-width: 1024px){ :root{ --gutter: 36px; } }
+@media (max-width: 640px){ :root{ --gutter: 20px; } }
+
+*, *::before, *::after{ box-sizing: border-box; margin: 0; padding: 0; }
+html, body{
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  font-size: 16px;
+  line-height: 1.6;
+}
+img{ max-width: 100%; display: block; }
+a{ color: inherit; text-decoration: none; }
+ul{ list-style: none; }
+button{ font: inherit; }
+
+/* ============================================================
+   TICKER
+   ============================================================ */
+.ticker{
+  background: var(--ink);
+  color: var(--paper);
+  border-bottom: var(--border);
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 7px 0;
+  font-family: var(--condensed);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.ticker-track{ display: inline-flex; animation: scroll-left 32s linear infinite; }
+.ticker-track span{ padding: 0 1.75rem; border-right: 1px solid rgba(255,246,233,0.25); }
+@keyframes scroll-left{ from{ transform: translateX(0); } to{ transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce){ .ticker-track{ animation: none; } }
+
+/* ============================================================
+   EYEBROW
+   ============================================================ */
+.eyebrow{ background: var(--paper-2); border-bottom: var(--border); padding: 7px var(--gutter); }
+.eyebrow-inner{
+  max-width: var(--max); margin: 0 auto;
+  display: flex; flex-wrap: wrap; gap: 0.4rem 0;
+  font-family: var(--mono); font-size: 0.7rem; color: var(--ink-3);
+}
+.eyebrow-inner span:not(:last-child)::after{ content: ' · '; }
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+.nav{ background: var(--paper); border-bottom: var(--border); position: sticky; top: 0; z-index: 50; }
+.nav-inner{
+  max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter);
+  height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
+}
+.brand{ display: flex; align-items: center; gap: 0.65rem; white-space: nowrap; }
+.brand-mark{
+  width: 42px; height: 42px; border: 2px solid var(--ink); background: var(--paper-2);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; border-radius: 50%;
+}
+.brand-mark svg{ width: 100%; height: 100%; }
+.brand-text{ line-height: 1.15; }
+.brand-text strong{ display: block; font-family: var(--display); font-size: 0.9rem; letter-spacing: 0.01em; }
+.brand-text small{
+  display: block; font-family: var(--condensed); font-size: 0.58rem;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); font-weight: 500;
+}
+.nav-links{ display: flex; gap: 1.7rem; flex-wrap: wrap; }
+.nav-links a{
+  font-family: var(--condensed); font-size: 0.82rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.05em; border-bottom: 2px solid transparent; padding-bottom: 3px;
+  transition: color .15s, border-color .15s;
+}
+.nav-links a:hover{ color: var(--saffron); border-color: var(--saffron); }
+.nav-links a:focus-visible{ outline: 2px solid var(--saffron); outline-offset: 3px; }
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn{
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  font-family: var(--condensed); font-size: 0.84rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.06em; padding: 11px 22px; border: var(--border); box-shadow: var(--shadow);
+  cursor: pointer; transition: transform .1s, box-shadow .1s; white-space: nowrap; border-radius: 999px;
+}
+.btn:hover{ transform: translate(2px,2px); box-shadow: 2px 2px 0 var(--ink); }
+.btn:active{ transform: translate(4px,4px); box-shadow: none; }
+.btn:focus-visible{ outline: 2px solid var(--saffron); outline-offset: 3px; }
+.btn-saffron{ background: var(--saffron); color: var(--paper); }
+.btn-pink{    background: var(--pink);    color: var(--paper); }
+.btn-green{   background: var(--green);   color: var(--paper); }
+.btn-paper{   background: var(--paper);   color: var(--ink); }
+.btn-ghost{   background: transparent;    color: var(--ink); box-shadow: none; border-radius: 999px; }
+.btn-ghost:hover{ transform: none; background: var(--paper-2); }
+.btn[disabled]{ opacity: 0.45; cursor: not-allowed; box-shadow: none; transform: none; }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{ border-bottom: var(--border); padding: 60px var(--gutter) 52px; }
+.hero-inner{
+  max-width: var(--max); margin: 0 auto; display: grid;
+  grid-template-columns: 1fr 360px; gap: 3.5rem; align-items: center;
+}
+.kicker{
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--pink); margin-bottom: 0.9rem; display: inline-flex; align-items: center; gap: 0.5rem;
+}
+.kicker::before{ content: ''; width: 22px; height: 2px; background: var(--pink); }
+.h1{ font-family: var(--display); font-size: clamp(2.1rem, 5vw, 4rem); line-height: 1.08; margin-bottom: 1.1rem; }
+.h1 em{ font-style: normal; color: var(--saffron); }
+.lede{ font-size: 1.02rem; color: var(--ink-2); max-width: 48ch; line-height: 1.75; margin-bottom: 1.9rem; }
+.btn-row{ display: flex; flex-wrap: wrap; gap: 0.7rem; }
+
+.side-card{ border: var(--border); box-shadow: var(--shadow-lg); background: var(--paper-2); border-radius: 22px; overflow: hidden; }
+.side-card-tag{
+  background: var(--ink); color: var(--paper); font-family: var(--mono); font-size: 0.62rem;
+  letter-spacing: 0.09em; text-transform: uppercase; padding: 6px 11px; border-bottom: var(--border);
+  display: flex; justify-content: space-between;
+}
+.side-card-art{
+  aspect-ratio: 4/5; border-bottom: var(--border);
+  background: linear-gradient(160deg, var(--paper-soft) 0%, var(--saffron-soft) 100%);
+  display: flex; align-items: center; justify-content: center; padding: 6%;
+}
+.side-card-art svg{ width: 100%; height: 100%; }
+.side-card-foot{ padding: 10px 13px; font-family: var(--mono); font-size: 0.65rem; color: var(--ink-3); }
+
+/* ============================================================
+   STATS
+   ============================================================ */
+.stats{ background: var(--paper-2); border-bottom: var(--border); padding: 20px var(--gutter); }
+.stats-inner{ max-width: var(--max); margin: 0 auto; display: flex; }
+.stat{ flex: 1; padding: 4px 22px; border-right: var(--border); }
+.stat:first-child{ padding-left: 0; }
+.stat:last-child{ border-right: none; }
+.stat-num{ font-family: var(--display); font-size: 2.1rem; line-height: 1; transition: color .2s; }
+.stat-label{
+  font-family: var(--condensed); font-size: 0.72rem; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--ink-3); margin-top: 4px;
+}
+
+/* ============================================================
+   SOCIAL STRIP
+   ============================================================ */
+.social{ background: var(--paper-2); border-bottom: var(--border); padding: 13px var(--gutter); }
+.social-inner{ max-width: var(--max); margin: 0 auto; display: flex; flex-wrap: wrap; gap: 0.4rem 1.3rem; align-items: center; }
+.social-label{ font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+.social-link{ font-family: var(--condensed); font-size: 0.8rem; font-weight: 600; border-bottom: 1.5px solid var(--paper-3); padding-bottom: 1px; transition: color .15s, border-color .15s; }
+.social-link:hover{ color: var(--saffron); border-color: var(--saffron); }
+
+/* ============================================================
+   SECTION SCAFFOLDING
+   ============================================================ */
+section{ border-bottom: var(--border); }
+.sec-inner{ max-width: var(--max); margin: 0 auto; padding: 56px var(--gutter); }
+.sec-head{
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 2rem;
+  border-bottom: var(--border); padding-bottom: 1.3rem; margin-bottom: 2.4rem;
+}
+.sec-tag{ font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 0.4rem; }
+.h2{ font-family: var(--display); font-size: clamp(1.6rem, 3.3vw, 2.5rem); line-height: 1.1; }
+.h2 em{ font-style: normal; color: var(--saffron); }
+.pill{
+  font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase;
+  background: var(--paper-3); border: 1.5px solid var(--ink); padding: 3px 9px; white-space: nowrap; border-radius: 999px;
+}
+
+.split{ display: grid; grid-template-columns: 1fr 1fr; border: var(--border); box-shadow: var(--shadow-lg); border-radius: 18px; overflow: hidden; }
+.split > div{ padding: 2rem; }
+.split > div:first-child{ border-right: var(--border); }
+.split-label{
+  font-family: var(--condensed); font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.09em; color: var(--pink); padding-bottom: 0.85rem; border-bottom: var(--border); margin-bottom: 0.85rem;
+}
+.split p{ color: var(--ink-2); font-size: 0.98rem; line-height: 1.78; }
+
+.callout{ background: var(--saffron); border: var(--border); box-shadow: var(--shadow-lg); padding: 2.4rem; text-align: center; margin: 3rem 0; border-radius: 22px; }
+.callout-quote{ font-family: var(--display); font-size: clamp(1.15rem, 2.7vw, 1.9rem); color: var(--paper); line-height: 1.3; margin-bottom: 0.75rem; }
+.callout-attr{ font-family: var(--mono); font-size: 0.68rem; color: rgba(255,246,233,0.82); letter-spacing: 0.08em; text-transform: uppercase; }
+
+.trio{ display: grid; grid-template-columns: repeat(3,1fr); border: var(--border); box-shadow: var(--shadow-lg); border-radius: 18px; overflow: hidden; }
+.trio > div{ padding: 1.7rem; border-right: var(--border); }
+.trio > div:last-child{ border-right: none; }
+.trio-icon{ font-size: 1.6rem; margin-bottom: 0.55rem; }
+.trio-title{ font-family: var(--condensed); font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.35rem; }
+.trio-text{ font-size: 0.82rem; color: var(--ink-3); line-height: 1.6; }
+
+.cta{
+  background: var(--green); border: var(--border); box-shadow: var(--shadow-lg); padding: 2.4rem; border-radius: 22px;
+  display: flex; align-items: center; justify-content: space-between; gap: 1.6rem; flex-wrap: wrap;
+}
+.cta-text{ font-family: var(--display); font-size: clamp(1.15rem, 2.3vw, 1.8rem); color: var(--paper); line-height: 1.22; }
+.cta-text small{ display: block; font-family: var(--sans); font-size: 0.84rem; font-weight: 400; color: rgba(255,246,233,0.78); margin-top: 0.4rem; }
+
+/* ============================================================
+   ROUTINE TIMELINE
+   ============================================================ */
+.timeline{ border: var(--border); box-shadow: var(--shadow-lg); border-radius: 18px; overflow: hidden; }
+.slot{
+  display: grid; grid-template-columns: 110px 1fr 44px;
+  border-bottom: var(--border); align-items: stretch; transition: background .15s;
+}
+.slot:last-child{ border-bottom: none; }
+.slot.done{ background: var(--paper-2); }
+.slot-time{
+  background: var(--ink); color: var(--paper); font-family: var(--mono); font-size: 0.72rem;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  border-right: var(--border); padding: 0.6rem; letter-spacing: 0.02em;
+}
+.slot-body{ padding: 1.1rem 1.5rem; display: flex; flex-direction: column; gap: 0.2rem; justify-content: center; }
+.slot-title{ font-family: var(--condensed); font-size: 0.98rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; }
+.slot.done .slot-title{ text-decoration: line-through; color: var(--ink-3); }
+.slot-sub{ font-size: 0.84rem; color: var(--ink-3); line-height: 1.5; }
+.slot-check{
+  border-left: var(--border); display: flex; align-items: center; justify-content: center;
+  background: transparent; border-top: none; border-bottom: none; border-right: none; cursor: pointer;
+}
+.checkbox{
+  width: 22px; height: 22px; border: 2.5px solid var(--ink); background: var(--paper);
+  display: flex; align-items: center; justify-content: center; font-family: var(--display);
+  font-size: 0.85rem; line-height: 1; transition: background .12s, color .12s; border-radius: 50%;
+}
+.slot.done .checkbox{ background: var(--green); color: var(--paper); }
+.slot-check:focus-visible{ outline: 2px solid var(--saffron); outline-offset: 2px; }
+
+.progress-row{
+  display: flex; align-items: center; gap: 1rem; margin-bottom: 1.6rem;
+  font-family: var(--mono); font-size: 0.76rem; color: var(--ink-3); flex-wrap: wrap;
+}
+.progress-bar{
+  flex: 1; min-width: 160px; height: 14px; border: 2px solid var(--ink); background: var(--paper-2); overflow: hidden; border-radius: 999px;
+}
+.progress-fill{ height: 100%; background: var(--saffron); width: 0%; transition: width .25s ease; }
+.reset-link{
+  font-family: var(--condensed); font-size: 0.76rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--ink-3); border-bottom: 1.5px solid var(--paper-3);
+  background: none; border-top:none; border-left:none; border-right:none; cursor: pointer; padding: 0 0 1px;
+}
+.reset-link:hover{ color: var(--saffron); border-color: var(--saffron); }
+
+/* ============================================================
+   BED ROTTING MENU
+   ============================================================ */
+.rot-grid{ display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.1rem; }
+.rot-card{
+  border: var(--border); border-radius: 18px; box-shadow: var(--shadow); background: var(--paper-2);
+  padding: 1.4rem; display: flex; gap: 1rem; align-items: flex-start; cursor: pointer;
+  transition: transform .12s, box-shadow .12s, background .12s;
+}
+.rot-card:hover{ transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--ink); }
+.rot-card.picked{ background: var(--pink-soft); }
+.rot-icon{
+  width: 46px; height: 46px; border: 2px solid var(--ink); border-radius: 50%; background: var(--paper);
+  display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0;
+}
+.rot-title{ font-family: var(--condensed); font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 0.3rem; }
+.rot-text{ font-size: 0.83rem; color: var(--ink-3); line-height: 1.55; }
+.rot-pick-label{ margin-top: 1.5rem; font-family: var(--mono); font-size: 0.78rem; color: var(--ink-3); }
+.rot-pick-name{ color: var(--saffron); font-weight: 700; }
+
+/* ============================================================
+   QUIZ
+   ============================================================ */
+.quiz-card{ border: var(--border); border-radius: 22px; box-shadow: var(--shadow-lg); background: var(--paper-2); padding: 2.2rem; }
+.quiz-progress{ font-family: var(--mono); font-size: 0.72rem; color: var(--ink-3); margin-bottom: 1rem; letter-spacing: 0.04em; }
+.quiz-question{ font-family: var(--condensed); font-size: 1.25rem; font-weight: 700; margin-bottom: 1.4rem; line-height: 1.4; }
+.quiz-options{ display: flex; flex-direction: column; gap: 0.7rem; }
+.quiz-option{
+  border: 2.5px solid var(--ink); border-radius: 14px; background: var(--paper);
+  padding: 0.9rem 1.1rem; font-size: 0.95rem; text-align: left; cursor: pointer;
+  transition: background .12s, transform .1s, box-shadow .1s; box-shadow: 3px 3px 0 var(--ink);
+}
+.quiz-option:hover{ transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--ink); background: var(--saffron-soft); }
+.quiz-option:active{ transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--ink); }
+.quiz-option:focus-visible{ outline: 2px solid var(--saffron); outline-offset: 2px; }
+.quiz-result{ text-align: center; }
+.quiz-badge{
+  width: 84px; height: 84px; margin: 0 auto 1.2rem; border-radius: 50%; border: var(--border);
+  background: var(--saffron); display: flex; align-items: center; justify-content: center; font-size: 2.4rem;
+}
+.quiz-title{ font-family: var(--display); font-size: clamp(1.3rem, 2.8vw, 1.9rem); margin-bottom: 0.7rem; }
+.quiz-message{ font-size: 0.98rem; color: var(--ink-2); line-height: 1.75; max-width: 46ch; margin: 0 auto 1.6rem; }
+.quiz-actions{ display: flex; justify-content: center; gap: 0.7rem; flex-wrap: wrap; }
+
+/* ============================================================
+   RULES LIST
+   ============================================================ */
+.numbered{ border: var(--border); box-shadow: var(--shadow-lg); border-radius: 18px; overflow: hidden; }
+.numbered-row{ display: grid; grid-template-columns: 70px 1fr; border-bottom: var(--border); }
+.numbered-row:last-child{ border-bottom: none; }
+.numbered-idx{
+  background: var(--ink); color: var(--paper); font-family: var(--display); font-size: 1.5rem;
+  display: flex; align-items: center; justify-content: center; border-right: var(--border);
+}
+.numbered-body{ padding: 1.2rem 1.7rem; }
+.numbered-title{ font-family: var(--condensed); font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 0.3rem; }
+.numbered-text{ font-size: 0.85rem; color: var(--ink-3); line-height: 1.6; }
+
+/* ============================================================
+   REGISTRATION FORM
+   ============================================================ */
+.register-wrap{ display: grid; grid-template-columns: 1fr 1fr; gap: 2.4rem; align-items: start; }
+.form-card{ border: var(--border); border-radius: 22px; box-shadow: var(--shadow-lg); background: var(--paper-2); padding: 2.1rem; }
+.field{ margin-bottom: 1.2rem; }
+.field label{
+  display: block; font-family: var(--condensed); font-size: 0.78rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.45rem; color: var(--ink-2);
+}
+.field input[type="text"], .field select{
+  width: 100%; border: 2.5px solid var(--ink); border-radius: 12px; background: var(--paper);
+  padding: 0.7rem 0.9rem; font-family: var(--sans); font-size: 0.95rem; color: var(--ink);
+}
+.field input:focus-visible, .field select:focus-visible{ outline: 2px solid var(--saffron); outline-offset: 2px; }
+.field-hours{ display: flex; align-items: center; gap: 0.8rem; }
+.field-hours input[type="range"]{ flex: 1; }
+.field-hours-val{ font-family: var(--display); font-size: 1.3rem; color: var(--saffron); min-width: 3.2ch; text-align: right; }
+.checkrow{ display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.85rem; color: var(--ink-3); margin-bottom: 1.4rem; }
+.checkrow input{ margin-top: 0.2rem; }
+
+.member-card{ border: var(--border); border-radius: 22px; box-shadow: var(--shadow-lg); background: var(--saffron); padding: 2.1rem; color: var(--paper); }
+.member-card.hidden{ display: none; }
+.member-card-tag{ font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.85; margin-bottom: 0.9rem; }
+.member-card-name{ font-family: var(--display); font-size: 1.5rem; margin-bottom: 0.3rem; }
+.member-card-role{ font-family: var(--condensed); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.9; margin-bottom: 1.2rem; }
+.member-card-stat{ display: flex; justify-content: space-between; font-size: 0.88rem; padding: 0.5rem 0; border-top: 1px solid rgba(255,246,233,0.3); }
+.member-card-id{ font-family: var(--mono); font-size: 0.7rem; opacity: 0.75; margin-top: 1.2rem; }
+.placeholder-note{ font-size: 0.92rem; color: var(--ink-3); line-height: 1.7; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer{ background: var(--ink); color: var(--paper); }
+.foot-inner{ max-width: var(--max); margin: 0 auto; padding: 40px var(--gutter) 26px; display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 2.4rem; }
+.foot-brand{ font-family: var(--display); font-size: 1.2rem; margin-bottom: 0.55rem; }
+.foot-tag{ font-size: 0.8rem; color: rgba(255,246,233,0.55); line-height: 1.6; max-width: 32ch; }
+.foot-head{ font-family: var(--condensed); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--saffron-2); margin-bottom: 0.8rem; }
+.foot-links{ display: flex; flex-direction: column; gap: 0.42rem; }
+.foot-links a{ font-size: 0.82rem; color: rgba(255,246,233,0.7); transition: color .15s; }
+.foot-links a:hover{ color: var(--paper); }
+.foot-bottom{ border-top: 1px solid rgba(255,246,233,0.14); padding: 14px var(--gutter); max-width: var(--max); margin: 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.6rem; }
+.foot-bottom p{ font-family: var(--mono); font-size: 0.63rem; color: rgba(255,246,233,0.4); letter-spacing: 0.03em; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 920px){
+  .hero-inner{ grid-template-columns: 1fr; }
+  .side-card{ max-width: 340px; }
+  .split, .trio{ grid-template-columns: 1fr; }
+  .split > div:first-child{ border-right: none; border-bottom: var(--border); }
+  .trio > div{ border-right: none; border-bottom: var(--border); }
+  .trio > div:last-child{ border-bottom: none; }
+  .foot-inner{ grid-template-columns: 1fr; gap: 1.7rem; }
+  .rot-grid{ grid-template-columns: 1fr; }
+  .register-wrap{ grid-template-columns: 1fr; }
+}
+@media (max-width: 640px){
+  .nav-links{ display: none; }
+  .stats-inner{ flex-wrap: wrap; }
+  .stat{ flex: 1 0 42%; border-right: none; border-bottom: var(--border); padding: 10px 0; }
+  .slot{ grid-template-columns: 80px 1fr 40px; }
+  .slot-time{ font-size: 0.6rem; padding: 0.4rem; }
+  .numbered-row{ grid-template-columns: 52px 1fr; }
+  .cta{ flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker" role="region" aria-label="Daily announcements">
+  <div class="ticker-track">
+    <span>● Existing Today: Confirmed</span>
+    <span>✦ Life Is Not A Race ✦</span>
+    <span>Bed Rotting Is A Valid Personality Trait</span>
+    <span>✦ Showing Up Counts As Showing Up ✦</span>
+    <span>● Existing Today: Confirmed</span>
+    <span>✦ Life Is Not A Race ✦</span>
+    <span>Bed Rotting Is A Valid Personality Trait</span>
+    <span>✦ Showing Up Counts As Showing Up ✦</span>
+  </div>
+</div>
+
+<!-- EYEBROW -->
+<div class="eyebrow">
+  <div class="eyebrow-inner">
+    <span>Volume 1, Edition 1</span>
+    <span>Filed under: Gentle Disgruntlement</span>
+    <span>Sponsored by snacks</span>
+    <span>HQ: Under the blanket</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="brand">
+      <span class="brand-mark">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="55" r="34" fill="#FFFFFF" stroke="#241407" stroke-width="4"/>
+          <circle cx="24" cy="26" r="13" fill="#241407"/>
+          <circle cx="76" cy="26" r="13" fill="#241407"/>
+          <ellipse cx="33" cy="52" rx="10" ry="12" fill="#241407"/>
+          <ellipse cx="67" cy="52" rx="10" ry="12" fill="#241407"/>
+          <circle cx="33" cy="50" r="3" fill="#FFFFFF"/>
+          <circle cx="67" cy="50" r="3" fill="#FFFFFF"/>
+          <ellipse cx="50" cy="64" rx="7" ry="5.5" fill="#241407"/>
+          <path d="M 50 69 Q 50 75 44 76" stroke="#241407" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M 50 69 Q 50 75 56 76" stroke="#241407" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="brand-text">
+        <strong>LAZY PANDA</strong>
+        <small>Est. 2026 · Existing Is Enough</small>
+      </span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about">Philosophy</a></li>
+      <li><a href="#routine">Routine</a></li>
+      <li><a href="#rotting">Bed Rotting</a></li>
+      <li><a href="#quiz">Quiz</a></li>
+      <li><a href="#register">Join</a></li>
+    </ul>
+    <a href="#quiz" class="btn btn-saffron">Take The Quiz</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div>
+      <p class="kicker">Daily Almanac · Updated never, on purpose</p>
+      <h1 class="h1">Life Isn't A Race.<br>Sometimes<br><em>Existing Is Enough.</em></h1>
+      <p class="lede">
+        A soft, judgment free space for the chronically unmotivated.
+        No alarms that scream, no goals that shout, no hustle past this border.
+        Some days the bravest thing you do is simply stay alive until dinner.
+      </p>
+      <div class="btn-row">
+        <a href="#quiz" class="btn btn-saffron">Take The Laziness Quiz →</a>
+        <a href="#rotting" class="btn btn-pink">Browse Bed Rotting Menu →</a>
+        <a href="#about" class="btn btn-paper">Why This Exists</a>
+      </div>
+    </div>
+
+    <div>
+      <div class="side-card">
+        <div class="side-card-tag">
+          <span>★ Official Mascot</span>
+          <span>No. 001</span>
+        </div>
+        <div class="side-card-art" style="background: linear-gradient(160deg, #FBEAD2 0%, #FBD9B8 100%);">
+          <svg viewBox="0 0 300 320" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="78" cy="62" r="38" fill="#241407"/>
+            <circle cx="222" cy="62" r="38" fill="#241407"/>
+            <circle cx="78" cy="62" r="22" fill="#4A3220"/>
+            <circle cx="222" cy="62" r="22" fill="#4A3220"/>
+            <circle cx="150" cy="160" r="110" fill="#FFFDF8" stroke="#241407" stroke-width="5"/>
+            <ellipse cx="103" cy="150" rx="32" ry="40" fill="#241407"/>
+            <ellipse cx="197" cy="150" rx="32" ry="40" fill="#241407"/>
+            <path d="M 88 150 Q 103 142 118 150" stroke="#FFFDF8" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <path d="M 182 150 Q 197 142 212 150" stroke="#FFFDF8" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <ellipse cx="92" cy="190" rx="14" ry="9" fill="#E8849A" opacity="0.5"/>
+            <ellipse cx="208" cy="190" rx="14" ry="9" fill="#E8849A" opacity="0.5"/>
+            <ellipse cx="150" cy="186" rx="15" ry="11" fill="#241407"/>
+            <path d="M 150 197 Q 150 212 132 216" stroke="#241407" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <path d="M 150 197 Q 150 212 168 216" stroke="#241407" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <text x="232" y="74" font-family="Bowlby One" font-size="26" fill="#241407">z</text>
+            <text x="252" y="56" font-family="Bowlby One" font-size="20" fill="#241407">z</text>
+            <text x="266" y="42" font-family="Bowlby One" font-size="15" fill="#241407">z</text>
+            <path d="M 60 250 Q 40 230 55 205 Q 85 220 75 250 Q 67 252 60 250 Z" fill="#2E7D4F" stroke="#241407" stroke-width="3"/>
+          </svg>
+        </div>
+        <div class="side-card-foot">The Founder, mid-shift, doing absolutely nothing</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stats-inner">
+    <div class="stat"><div class="stat-num" id="statTotal">6</div><div class="stat-label">Time Blocks</div></div>
+    <div class="stat"><div class="stat-num" id="statDone">0</div><div class="stat-label">Done Today</div></div>
+    <div class="stat"><div class="stat-num">14h</div><div class="stat-label">Sleep Record</div></div>
+    <div class="stat"><div class="stat-num">0</div><div class="stat-label">Guilt Allowed</div></div>
+  </div>
+</div>
+
+<!-- SOCIAL -->
+<div class="social">
+  <div class="social-inner">
+    <span class="social-label">Find the panda on</span>
+    <a class="social-link" href="#">@LazyPandaLife</a>
+    <a class="social-link" href="#">Instagram</a>
+    <a class="social-link" href="#">Reddit</a>
+    <a class="social-link" href="#">A blanket, probably</a>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div>
+        <p class="sec-tag">Chapter One</p>
+        <h2 class="h2">Our <em>Philosophy.</em></h2>
+      </div>
+      <span class="pill">Core values</span>
+    </div>
+
+    <div class="split">
+      <div>
+        <p class="split-label">The problem</p>
+        <p>Every productivity app wants you to wake up at 5am, journal, hydrate with intention, and conquer the day before breakfast. Most people just want to survive until lunch without crying.</p>
+      </div>
+      <div>
+        <p class="split-label">The response</p>
+        <p>A space built for the tired, the unmotivated, and the professionally horizontal. No streaks to keep. No goals that shout. Just permission to exist at your own, very slow, pace.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p class="callout-quote">"Some days the bravest thing you do is exist until 6pm. That counts. That always counts."</p>
+      <p class="callout-attr">The Panda, said while half asleep</p>
+    </div>
+  </div>
+</section>
+
+<!-- ROUTINE -->
+<section id="routine">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div>
+        <p class="sec-tag">Chapter Two</p>
+        <h2 class="h2">Today's <em>Routine.</em></h2>
+      </div>
+      <span class="pill">Tap to check off</span>
+    </div>
+
+    <div class="progress-row">
+      <span id="progressLabel">0 of 6 done. the day is yours either way</span>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <button class="reset-link" id="resetBtn">Reset day</button>
+    </div>
+
+    <div class="timeline" id="timeline">
+      <div class="slot" data-slot="0">
+        <div class="slot-time">8:00–9:00</div>
+        <div class="slot-body">
+          <p class="slot-title">Wake Up. Slowly.</p>
+          <p class="slot-sub">No alarms that scream. Open one eye, negotiate with the other.</p>
+        </div>
+        <button class="slot-check" aria-label="Mark Wake Up done"><span class="checkbox">✓</span></button>
+      </div>
+
+      <div class="slot" data-slot="1">
+        <div class="slot-time">9:00–10:30</div>
+        <div class="slot-body">
+          <p class="slot-title">Snack And Stare</p>
+          <p class="slot-sub">Breakfast in bed counts as a meal and a location decision.</p>
+        </div>
+        <button class="slot-check" aria-label="Mark Snack and Stare done"><span class="checkbox">✓</span></button>
+      </div>
+
+      <div class="slot" data-slot="2">
+        <div class="slot-time">10:30–11:00</div>
+        <div class="slot-body">
+          <p class="slot-title">Nap No. 1</p>
+          <p class="slot-sub">A pre-noon nap is not laziness, it is pacing.</p>
+        </div>
+        <button class="slot-check" aria-label="Mark Nap 1 done"><span class="checkbox">✓</span></button>
+      </div>
+
+      <div class="slot" data-slot="3">
+        <div class="slot-time">12:00–1:00</div>
+        <div class="slot-body">
+          <p class="slot-title">One Small Task</p>
+          <p class="slot-sub">Pick exactly one thing from your list. Do it. Stop there.</p>
+        </div>
+        <button class="slot-check" aria-label="Mark One Small Task done"><span class="checkbox">✓</span></button>
+      </div>
+
+      <div class="slot" data-slot="4">
+        <div class="slot-time">3:00–4:30</div>
+        <div class="slot-body">
+          <p class="slot-title">Nap No. 2, The Real One</p>
+          <p class="slot-sub">Curtains closed, phone face down, no negotiations.</p>
+        </div>
+        <button class="slot-check" aria-label="Mark Nap 2 done"><span class="checkbox">✓</span></button>
+      </div>
+
+      <div class="slot" data-slot="5">
+        <div class="slot-time">8:00–10:00</div>
+        <div class="slot-body">
+          <p class="slot-title">Wind Down And Sleep</p>
+          <p class="slot-sub">Lights low, brain off, panda mode fully engaged.</p>
+        </div>
+        <button class="slot-check" aria-label="Mark Wind Down done"><span class="checkbox">✓</span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BED ROTTING MENU -->
+<section id="rotting">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div>
+        <p class="sec-tag">Chapter Three</p>
+        <h2 class="h2">The Bed Rotting <em>Menu.</em></h2>
+      </div>
+      <span class="pill">Pick today's flavor</span>
+    </div>
+
+    <p style="font-size:0.95rem; color:var(--ink-2); max-width:60ch; line-height:1.75; margin-bottom:1.8rem;">
+      For the days when social life feels theoretical and the gym is a rumor. No plans, no people, no productivity. Just you, the mattress, and a soft commitment to doing as little as humanly possible.
+    </p>
+
+    <div class="rot-grid" id="rotGrid">
+      <div class="rot-card" data-name="Phone Scrolling Marathon">
+        <div class="rot-icon">📱</div>
+        <div>
+          <p class="rot-title">Phone Scrolling Marathon</p>
+          <p class="rot-text">Four hours, one app, zero memory of what you actually watched.</p>
+        </div>
+      </div>
+      <div class="rot-card" data-name="Snack Buffet, Horizontal Edition">
+        <div class="rot-icon">🍟</div>
+        <div>
+          <p class="rot-title">Snack Buffet, Horizontal Edition</p>
+          <p class="rot-text">Everything reachable without sitting up counts as a balanced meal.</p>
+        </div>
+      </div>
+      <div class="rot-card" data-name="Rewatching The Same Show">
+        <div class="rot-icon">📺</div>
+        <div>
+          <p class="rot-title">Rewatching The Same Show</p>
+          <p class="rot-text">You know every line. You are watching it again anyway. No notes.</p>
+        </div>
+      </div>
+      <div class="rot-card" data-name="Staring At The Ceiling">
+        <div class="rot-icon">🌀</div>
+        <div>
+          <p class="rot-title">Staring At The Ceiling</p>
+          <p class="rot-text">No thoughts, just texture. A surprisingly complete activity.</p>
+        </div>
+      </div>
+      <div class="rot-card" data-name="Pretending To Plan Tomorrow">
+        <div class="rot-icon">📝</div>
+        <div>
+          <p class="rot-title">Pretending To Plan Tomorrow</p>
+          <p class="rot-text">You will not do any of it. Writing the list still felt nice.</p>
+        </div>
+      </div>
+      <div class="rot-card" data-name="Group Chat, Read Only">
+        <div class="rot-icon">💬</div>
+        <div>
+          <p class="rot-title">Group Chat, Read Only</p>
+          <p class="rot-text">Social life, technically. You read every message. You replied to none.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="rot-pick-label" id="rotPickLabel">No flavor picked yet. Tap a card, no commitment required.</p>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div>
+        <p class="sec-tag">Chapter Four</p>
+        <h2 class="h2">The Laziness <em>Quiz.</em></h2>
+      </div>
+      <span class="pill">5 questions, no wrong answers</span>
+    </div>
+
+    <div class="quiz-card" id="quizCard">
+      <div class="quiz-progress" id="quizProgress">Question 1 of 5</div>
+      <p class="quiz-question" id="quizQuestion"></p>
+      <div class="quiz-options" id="quizOptions"></div>
+    </div>
+  </div>
+</section>
+
+<!-- THE LAZY CODE -->
+<section id="code">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div>
+        <p class="sec-tag">Chapter Five</p>
+        <h2 class="h2">The Lazy <em>Code.</em></h2>
+      </div>
+    </div>
+
+    <div class="numbered">
+      <div class="numbered-row">
+        <div class="numbered-idx">01</div>
+        <div class="numbered-body">
+          <p class="numbered-title">Rest Is Not Optional</p>
+          <p class="numbered-text">It is the first item on the list, not the reward for finishing it.</p>
+        </div>
+      </div>
+      <div class="numbered-row">
+        <div class="numbered-idx">02</div>
+        <div class="numbered-body">
+          <p class="numbered-title">One Task, Not Ten</p>
+          <p class="numbered-text">Pick the smallest version of the thing. Do that. Anything extra is a bonus, not a baseline.</p>
+        </div>
+      </div>
+      <div class="numbered-row">
+        <div class="numbered-idx">03</div>
+        <div class="numbered-body">
+          <p class="numbered-title">Naps Are Non Negotiable</p>
+          <p class="numbered-text">Minimum two per day. Three on bad days. No one is checking.</p>
+        </div>
+      </div>
+      <div class="numbered-row">
+        <div class="numbered-idx">04</div>
+        <div class="numbered-body">
+          <p class="numbered-title">Guilt Is Not Productive</p>
+          <p class="numbered-text">Feeling bad about resting does not make you more rested. It just makes you tired and bad.</p>
+        </div>
+      </div>
+      <div class="numbered-row">
+        <div class="numbered-idx">05</div>
+        <div class="numbered-body">
+          <p class="numbered-title">Tomorrow Is A Different Panda's Problem</p>
+          <p class="numbered-text">You do not have to plan past today. Today is doing enough work as it is.</p>
+        </div>
+      </div>
+    </div>
+
+    <br>
+
+    <div class="cta">
+      <div class="cta-text">
+        Ready to do the bare minimum, beautifully?
+        <small>No alarms, no hustle, no judgment. Just a panda and a plan.</small>
+      </div>
+      <a href="#register" class="btn btn-paper">Join The Almanac →</a>
+    </div>
+  </div>
+</section>
+
+<!-- REGISTER -->
+<section id="register">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div>
+        <p class="sec-tag">Chapter Six</p>
+        <h2 class="h2">Join The <em>Almanac.</em></h2>
+      </div>
+      <span class="pill">Takes thirty seconds, maybe less</span>
+    </div>
+
+    <p style="font-size:0.95rem; color:var(--ink-2); max-width:60ch; line-height:1.75; margin-bottom:1.8rem;">
+      Membership is for anyone who sleeps generously, plans loosely, and treats the couch as a long term residence. Fill in your details below and the panda will print you a card.
+    </p>
+
+    <div class="register-wrap">
+      <div class="form-card">
+        <div class="field">
+          <label for="fieldName">Your name</label>
+          <input type="text" id="fieldName" placeholder="What should the card say">
+        </div>
+        <div class="field">
+          <label for="fieldHours">Average hours slept per night</label>
+          <div class="field-hours">
+            <input type="range" id="fieldHours" min="6" max="16" value="12" step="1">
+            <span class="field-hours-val" id="fieldHoursVal">12h</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="fieldStyle">Preferred rotting style</label>
+          <select id="fieldStyle">
+            <option value="Phone Scrolling Marathon">Phone Scrolling Marathon</option>
+            <option value="Snack Buffet, Horizontal Edition">Snack Buffet, Horizontal Edition</option>
+            <option value="Rewatching The Same Show">Rewatching The Same Show</option>
+            <option value="Staring At The Ceiling">Staring At The Ceiling</option>
+            <option value="Pretending To Plan Tomorrow">Pretending To Plan Tomorrow</option>
+            <option value="Group Chat, Read Only">Group Chat, Read Only</option>
+          </select>
+        </div>
+        <div class="checkrow">
+          <input type="checkbox" id="fieldPledge">
+          <label for="fieldPledge" style="margin:0; text-transform:none; font-family:var(--sans); font-weight:400; font-size:0.85rem;">
+            I pledge to take at least one nap I did not technically earn
+          </label>
+        </div>
+        <button class="btn btn-saffron" id="registerBtn" style="width:100%; justify-content:center;">Register Me →</button>
+      </div>
+
+      <div>
+        <div class="member-card hidden" id="memberCard">
+          <p class="member-card-tag">Official Member Card</p>
+          <p class="member-card-name" id="cardName">Your Name</p>
+          <p class="member-card-role" id="cardRole">Certified Bed Resident</p>
+          <div class="member-card-stat"><span>Sleep average</span><span id="cardHours">12h</span></div>
+          <div class="member-card-stat"><span>Preferred flavor</span><span id="cardStyle">Phone Scrolling</span></div>
+          <div class="member-card-stat"><span>Status</span><span>Approved, obviously</span></div>
+          <p class="member-card-id" id="cardId">Member No. 000000</p>
+        </div>
+        <div class="placeholder-note" id="formPlaceholder">
+          Fill the form and press register. Your member card will appear right here, fully decorated and completely unnecessary, just like everything else on this page.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div>
+        <p class="sec-tag">Chapter Seven</p>
+        <h2 class="h2">Get In <em>Touch.</em></h2>
+      </div>
+    </div>
+    <p style="font-size:1rem;color:var(--ink-2);max-width:52ch;line-height:1.75;margin-bottom:1.8rem;">
+      Send us your favorite nap spots, your worst productivity guru horror stories, or a picture of your pet doing nothing. We read everything eventually, on our own schedule.
+    </p>
+    <a href="mailto:hello@lazypanda.example" class="btn btn-saffron">Email The Panda →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-inner">
+    <div>
+      <p class="foot-brand">LAZY PANDA</p>
+      <p class="foot-tag">Life is not a race. Sometimes existing is enough. Funded by snacks. Accountable to no one.</p>
+    </div>
+    <div>
+      <p class="foot-head">Navigate</p>
+      <div class="foot-links">
+        <a href="#about">Philosophy</a>
+        <a href="#routine">Routine</a>
+        <a href="#rotting">Bed Rotting</a>
+        <a href="#quiz">Quiz</a>
+        <a href="#register">Join</a>
+      </div>
+    </div>
+    <div>
+      <p class="foot-head">Find us</p>
+      <div class="foot-links">
+        <a href="#">Instagram</a>
+        <a href="#">Reddit</a>
+        <a href="#">Under a blanket</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <p>© 2026 Lazy Panda Almanac. Built while lying down</p>
+    <p>No hustle culture was harmed in the making of this nap</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ---------- ROUTINE TIMELINE ---------- */
+  const slots = Array.from(document.querySelectorAll('.slot'));
+  const total = slots.length;
+  const statDone = document.getElementById('statDone');
+  const statTotal = document.getElementById('statTotal');
+  const progressFill = document.getElementById('progressFill');
+  const progressLabel = document.getElementById('progressLabel');
+  const resetBtn = document.getElementById('resetBtn');
+
+  statTotal.textContent = total;
+
+  function updateRoutine(){
+    const doneCount = slots.filter(s => s.classList.contains('done')).length;
+    statDone.textContent = doneCount;
+    const pct = total ? Math.round((doneCount/total)*100) : 0;
+    progressFill.style.width = pct + '%';
+
+    let msg = doneCount + ' of ' + total + ' done. the day is yours either way';
+    if(doneCount === total && total > 0){
+      msg = 'All done. That is genuinely impressive. Go nap on principle.';
+    } else if(doneCount === 0){
+      msg = '0 of ' + total + ' done. the day is yours either way';
+    }
+    progressLabel.textContent = msg;
+  }
+
+  slots.forEach(slot => {
+    const btn = slot.querySelector('.slot-check');
+    btn.addEventListener('click', () => {
+      slot.classList.toggle('done');
+      updateRoutine();
+    });
+  });
+
+  resetBtn.addEventListener('click', () => {
+    slots.forEach(s => s.classList.remove('done'));
+    updateRoutine();
+  });
+
+  updateRoutine();
+
+  /* ---------- BED ROTTING MENU ---------- */
+  const rotCards = Array.from(document.querySelectorAll('.rot-card'));
+  const rotPickLabel = document.getElementById('rotPickLabel');
+
+  rotCards.forEach(card => {
+    card.addEventListener('click', () => {
+      rotCards.forEach(c => c.classList.remove('picked'));
+      card.classList.add('picked');
+      const name = card.getAttribute('data-name');
+      rotPickLabel.innerHTML = 'Today\'s flavor: <span class="rot-pick-name">' + name + '</span>. No notes needed, no explanation required.';
+    });
+  });
+
+  /* ---------- QUIZ ---------- */
+  const quizData = [
+    {
+      q: "It is 11am on a free day. What is happening right now?",
+      opts: [
+        { text: "Already up, dressed, and three errands deep", pts: 0 },
+        { text: "Awake, but still negotiating with the blanket", pts: 2 },
+        { text: "Technically conscious, horizontally", pts: 3 },
+        { text: "What is 11am, I have not opened my eyes yet", pts: 4 }
+      ]
+    },
+    {
+      q: "Someone invites you to a plan tonight. Your honest reaction?",
+      opts: [
+        { text: "Already getting ready, love a plan", pts: 0 },
+        { text: "Sure, if it is low effort and ends early", pts: 1 },
+        { text: "I will say maybe and mean no", pts: 3 },
+        { text: "My phone is already on do not disturb", pts: 4 }
+      ]
+    },
+    {
+      q: "How many hours did you sleep last night, give or take?",
+      opts: [
+        { text: "Six, I had things to do", pts: 0 },
+        { text: "Eight, a respectable number", pts: 1 },
+        { text: "Eleven, the bed had other plans for me", pts: 3 },
+        { text: "Honestly, fourteen and proud of it", pts: 4 }
+      ]
+    },
+    {
+      q: "Your to do list for today looks like what?",
+      opts: [
+        { text: "Color coded and fully scheduled", pts: 0 },
+        { text: "One real task, the rest is decoration", pts: 2 },
+        { text: "Exists, somewhere, theoretically", pts: 3 },
+        { text: "There is no list, there has never been a list", pts: 4 }
+      ]
+    },
+    {
+      q: "Pick the activity that sounds most like your weekend.",
+      opts: [
+        { text: "Gym, errands, a productive blur", pts: 0 },
+        { text: "One outing, then straight home to recover", pts: 1 },
+        { text: "Couch, snacks, a show you have seen before", pts: 3 },
+        { text: "Bed. Just bed. The whole time. No further questions", pts: 4 }
+      ]
+    }
+  ];
+
+  let quizIndex = 0;
+  let quizScore = 0;
+
+  const quizCard = document.getElementById('quizCard');
+  const quizProgress = document.getElementById('quizProgress');
+  const quizQuestion = document.getElementById('quizQuestion');
+  const quizOptions = document.getElementById('quizOptions');
+
+  function renderQuestion(){
+    const current = quizData[quizIndex];
+    quizProgress.textContent = 'Question ' + (quizIndex + 1) + ' of ' + quizData.length;
+    quizQuestion.textContent = current.q;
+    quizOptions.innerHTML = '';
+
+    current.opts.forEach(opt => {
+      const b = document.createElement('button');
+      b.className = 'quiz-option';
+      b.textContent = opt.text;
+      b.addEventListener('click', () => {
+        quizScore += opt.pts;
+        quizIndex++;
+        if(quizIndex < quizData.length){
+          renderQuestion();
+        } else {
+          renderResult();
+        }
+      });
+      quizOptions.appendChild(b);
+    });
+  }
+
+  function getResultProfile(score){
+    if(score >= 16){
+      return {
+        emoji: '👑',
+        title: "Supreme Champion Of Doing Nothing",
+        message: "You did not just take this quiz, you rested through it. Fourteen hour nights, zero guilt, a to do list that has never existed. This is not a phase, this is mastery. The panda salutes you from a fully reclined position and asks, gently, that you never change."
+      };
+    } else if(score >= 11){
+      return {
+        emoji: '🛏️',
+        title: "Certified Professional Bed Resident",
+        message: "Impressively horizontal. You understand that rest is not earned, it is simply taken. A few stray bursts of motivation slip through, but mostly you know where the real comfort lives, and it is not outside."
+      };
+    } else if(score >= 6){
+      return {
+        emoji: '🐼',
+        title: "Balanced, In A Lazy Sort Of Way",
+        message: "You rest when you need to and move when you must, which honestly sounds exhausting to the panda. There is a soft, sleepy soul in there fighting to come out. Let it."
+      };
+    } else {
+      return {
+        emoji: '⏰',
+        title: "Honorary Member, Still Learning",
+        message: "You are doing quite a lot, actually. The panda is concerned and also a little amazed. Consider this your formal invitation to do less today than you did yesterday. Start with one nap. See how it feels."
+      };
+    }
+  }
+
+  function renderResult(){
+    const profile = getResultProfile(quizScore);
+    quizCard.innerHTML =
+      '<div class="quiz-result">' +
+        '<div class="quiz-badge">' + profile.emoji + '</div>' +
+        '<p class="quiz-title">' + profile.title + '</p>' +
+        '<p class="quiz-message">' + profile.message + '</p>' +
+        '<div class="quiz-actions">' +
+          '<button class="btn btn-saffron" id="quizRetry">Take It Again →</button>' +
+          '<a href="#register" class="btn btn-paper">Register With This Score →</a>' +
+        '</div>' +
+      '</div>';
+
+    document.getElementById('quizRetry').addEventListener('click', () => {
+      quizIndex = 0;
+      quizScore = 0;
+      quizCard.innerHTML =
+        '<div class="quiz-progress" id="quizProgress"></div>' +
+        '<p class="quiz-question" id="quizQuestion"></p>' +
+        '<div class="quiz-options" id="quizOptions"></div>';
+      // re-grab refs since innerHTML replaced them
+      window.__reinitQuiz();
+    });
+  }
+
+  // expose a tiny reinit so the retry button can re-bind fresh DOM nodes
+  window.__reinitQuiz = function(){
+    const qp = document.getElementById('quizProgress');
+    const qq = document.getElementById('quizQuestion');
+    const qo = document.getElementById('quizOptions');
+    // reassign module-level refs by closures is awkward here, so just re-run renderQuestion
+    // using the freshly queried nodes via a small local override
+    const current = quizData[quizIndex];
+    qp.textContent = 'Question ' + (quizIndex + 1) + ' of ' + quizData.length;
+    qq.textContent = current.q;
+    qo.innerHTML = '';
+    current.opts.forEach(opt => {
+      const b = document.createElement('button');
+      b.className = 'quiz-option';
+      b.textContent = opt.text;
+      b.addEventListener('click', () => {
+        quizScore += opt.pts;
+        quizIndex++;
+        if(quizIndex < quizData.length){
+          window.__reinitQuiz();
+        } else {
+          renderResult();
+        }
+      });
+      qo.appendChild(b);
+    });
+  };
+
+  renderQuestion();
+
+  /* ---------- REGISTRATION ---------- */
+  const fieldHours = document.getElementById('fieldHours');
+  const fieldHoursVal = document.getElementById('fieldHoursVal');
+  fieldHours.addEventListener('input', () => {
+    fieldHoursVal.textContent = fieldHours.value + 'h';
+  });
+
+  const registerBtn = document.getElementById('registerBtn');
+  const memberCard = document.getElementById('memberCard');
+  const formPlaceholder = document.getElementById('formPlaceholder');
+
+  function roleForHours(h){
+    h = Number(h);
+    if(h >= 14) return "Founding Member, Sleep Division";
+    if(h >= 12) return "Certified Bed Resident";
+    if(h >= 9)  return "Casual Rester, In Training";
+    return "Honorary Member";
+  }
+
+  registerBtn.addEventListener('click', () => {
+    const name = document.getElementById('fieldName').value.trim() || 'Anonymous Napper';
+    const hours = document.getElementById('fieldHours').value;
+    const style = document.getElementById('fieldStyle').value;
+
+    document.getElementById('cardName').textContent = name;
+    document.getElementById('cardRole').textContent = roleForHours(hours);
+    document.getElementById('cardHours').textContent = hours + 'h';
+    document.getElementById('cardStyle').textContent = style;
+    document.getElementById('cardId').textContent = 'Member No. ' + String(Math.floor(Math.random()*900000)+100000);
+
+    memberCard.classList.remove('hidden');
+    formPlaceholder.style.display = 'none';
+  });
+})();
+</script>
+
+</body>
+</html>

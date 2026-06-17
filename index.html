@@ -1,445 +1,602 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Lazy Panda Almanac — Existing Is Enough</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Lazy Panda Almanac — Existing Is Enough</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
 
-  <style>
-    /* ============================================================
-       DESIGN TOKENS — warmer, softer, more "cute" tilt on the same
-       brutalist-newspaper bones (hard borders, offset shadows, ticker)
-       ============================================================ */
-    :root{
-      --saffron:      #E8762E;
-      --saffron-2:    #F4A05C;
-      --saffron-soft: #FBD9B8;
-      --pink:         #E8849A;
-      --pink-soft:    #F7D7DF;
-      --green:        #2E7D4F;
-      --green-2:      #4FA873;
-      --ink:          #241407;
-      --ink-2:        #4A3220;
-      --ink-3:        #7A5F47;
-      --paper:        #FFF6E9;
-      --paper-2:      #FBEAD2;
-      --paper-3:      #F2D9B8;
-      --gold:         #D9A536;
+<style>
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root{
+  --saffron:      #E8762E;
+  --saffron-2:    #F4A05C;
+  --saffron-soft: #FBD9B8;
+  --pink:         #E8849A;
+  --pink-soft:    #F7D7DF;
+  --lilac:        #B79FD0;
+  --lilac-soft:   #E8DFF2;
+  --sky:          #7FB4C9;
+  --sky-soft:     #DCEEF3;
+  --green:        #2E7D4F;
+  --green-2:      #4FA873;
+  --ink:          #241407;
+  --ink-2:        #4A3220;
+  --ink-3:        #7A5F47;
+  --paper:        #FFF6E9;
+  --paper-2:      #FBEAD2;
+  --paper-3:      #F2D9B8;
+  --gold:         #D9A536;
 
-      --display:   'Bowlby One', 'Impact', sans-serif;
-      --condensed: 'Oswald', 'Arial Narrow', sans-serif;
-      --sans:      'Inter', -apple-system, system-ui, sans-serif;
-      --mono:      'JetBrains Mono', ui-monospace, monospace;
+  --display:   'Bowlby One', 'Impact', sans-serif;
+  --condensed: 'Oswald', 'Arial Narrow', sans-serif;
+  --sans:      'Inter', -apple-system, system-ui, sans-serif;
+  --mono:      'JetBrains Mono', ui-monospace, monospace;
 
-      --max:    1280px;
-      --gutter: 56px;
+  --max:    1280px;
+  --gutter: 56px;
 
-      --border:    2.5px solid var(--ink);
-      --shadow:    4px 4px 0 var(--ink);
-      --shadow-lg: 7px 7px 0 var(--ink);
-    }
-    @media (max-width: 1024px){ :root{ --gutter: 36px; } }
-    @media (max-width: 640px){ :root{ --gutter: 20px; } }
+  --border:    2.5px solid var(--ink);
+  --shadow:    4px 4px 0 var(--ink);
+  --shadow-lg: 7px 7px 0 var(--ink);
+}
+@media (max-width: 1024px){ :root{ --gutter: 36px; } }
+@media (max-width: 640px){ :root{ --gutter: 20px; } }
 
-    *, *::before, *::after{ box-sizing: border-box; margin: 0; padding: 0; }
-    html, body{
-      background: var(--paper);
-      color: var(--ink);
-      font-family: var(--sans);
-      -webkit-font-smoothing: antialiased;
-      font-size: 16px;
-      line-height: 1.6;
-      overflow-x: hidden;
-      width: 100%;
-    }
-    img{ max-width: 100%; display: block; }
-    a{ color: inherit; text-decoration: none; }
-    ul{ list-style: none; }
-    button{ font: inherit; }
+*, *::before, *::after{ box-sizing: border-box; margin: 0; padding: 0; }
+html, body{
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  width: 100%;
+}
+img{ max-width: 100%; display: block; }
+a{ color: inherit; text-decoration: none; }
+ul{ list-style: none; }
+button{ font: inherit; }
 
-    /* ============================================================
-       TICKER
-       ============================================================ */
-    .ticker{
-      background: var(--ink);
-      color: var(--paper);
-      border-bottom: var(--border);
-      overflow: hidden;
-      white-space: nowrap;
-      padding: 7px 0;
-      font-family: var(--condensed);
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      width: 100%;
-    }
-    .ticker-track{ display: inline-flex; animation: scroll-left 32s linear infinite; }
-    .ticker-track span{ padding: 0 1.75rem; border-right: 1px solid rgba(255,246,233,0.25); }
-    @keyframes scroll-left{ from{ transform: translateX(0); } to{ transform: translateX(-50%); } }
-    @media (prefers-reduced-motion: reduce){ .ticker-track{ animation: none; } }
+/* soft background texture, very subtle dot grid */
+body::before{
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(36,20,7,0.035) 1.4px, transparent 1.4px);
+  background-size: 22px 22px;
+  pointer-events: none;
+  z-index: 0;
+}
 
-    /* ============================================================
-       EYEBROW
-       ============================================================ */
-    .eyebrow{ background: var(--paper-2); border-bottom: var(--border); padding: 7px var(--gutter); }
-    .eyebrow-inner{
-      max-width: var(--max); margin: 0 auto;
-      display: flex; flex-wrap: wrap; gap: 0.4rem 0;
-      font-family: var(--mono); font-size: 0.7rem; color: var(--ink-3);
-    }
-    .eyebrow-inner span:not(:last-child)::after{ content: ' · '; }
+/* ============================================================
+   FLOATING STICKERS (decorative, ambient, gentle bob)
+   ============================================================ */
+.sticker{
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.9;
+  animation: bob 5s ease-in-out infinite;
+  filter: drop-shadow(2px 3px 0 rgba(36,20,7,0.15));
+}
+@keyframes bob{
+  0%, 100%{ transform: translateY(0) rotate(var(--rot, 0deg)); }
+  50%{ transform: translateY(-10px) rotate(var(--rot, 0deg)); }
+}
+@media (max-width: 760px){ .sticker{ display: none; } }
+@media (prefers-reduced-motion: reduce){ .sticker{ animation: none; } }
 
-    /* ============================================================
-       NAVBAR
-       ============================================================ */
-    .nav{ background: var(--paper); border-bottom: var(--border); position: sticky; top: 0; z-index: 50; }
-    .nav-inner{
-      max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter);
-      height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
-    }
-    .brand{ display: flex; align-items: center; gap: 0.65rem; white-space: nowrap; }
-    .brand-mark{
-      width: 42px; height: 42px; border: 2px solid var(--ink); background: var(--paper-2);
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; border-radius: 50%;
-    }
-    .brand-mark svg{ width: 100%; height: 100%; }
-    .brand-text{ line-height: 1.15; }
-    .brand-text strong{ display: block; font-family: var(--display); font-size: 0.9rem; letter-spacing: 0.01em; }
-    .brand-text small{
-      display: block; font-family: var(--condensed); font-size: 0.58rem;
-      letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); font-weight: 500;
-    }
-    .nav-links{ display: flex; gap: 1.7rem; flex-wrap: wrap; }
-    .nav-links a{
-      font-family: var(--condensed); font-size: 0.82rem; font-weight: 600; text-transform: uppercase;
-      letter-spacing: 0.05em; border-bottom: 2px solid transparent; padding-bottom: 3px;
-      transition: color .15s, border-color .15s;
-    }
-    .nav-links a:hover{ color: var(--saffron); border-color: var(--saffron); }
-    .nav-links a:focus-visible{ outline: 2px solid var(--saffron); outline-offset: 3px; }
+/* ============================================================
+   TICKER
+   ============================================================ */
+.ticker{
+  background: var(--ink);
+  color: var(--paper);
+  border-bottom: var(--border);
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 8px 0;
+  font-family: var(--condensed);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+.ticker-track{ display: inline-flex; animation: scroll-left 32s linear infinite; }
+.ticker-track span{ padding: 0 1.75rem; border-right: 1px solid rgba(255,246,233,0.25); }
+@keyframes scroll-left{ from{ transform: translateX(0); } to{ transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce){ .ticker-track{ animation: none; } }
 
-    /* ============================================================
-       BUTTONS
-       ============================================================ */
-    .btn{
-      display: inline-flex; align-items: center; gap: 0.45rem;
-      font-family: var(--condensed); font-size: 0.84rem; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.06em; padding: 11px 22px; border: var(--border); box-shadow: var(--shadow);
-      cursor: pointer; transition: transform .1s, box-shadow .1s; white-space: nowrap; border-radius: 999px;
-    }
-    .btn:hover{ transform: translate(2px,2px); box-shadow: 2px 2px 0 var(--ink); }
-    .btn:active{ transform: translate(4px,4px); box-shadow: none; }
-    .btn:focus-visible{ outline: 2px solid var(--saffron); outline-offset: 3px; }
-    .btn-saffron{ background: var(--saffron); color: var(--paper); }
-    .btn-pink{    background: var(--pink);    color: var(--paper); }
-    .btn-green{   background: var(--green);   color: var(--paper); }
-    .btn-paper{   background: var(--paper);   color: var(--ink); }
-    .btn-ghost{   background: transparent;    color: var(--ink); box-shadow: none; border-radius: 999px; }
-    .btn-ghost:hover{ transform: none; background: var(--paper-2); }
-    .btn[disabled]{ opacity: 0.45; cursor: not-allowed; box-shadow: none; transform: none; }
+/* ============================================================
+   EYEBROW
+   ============================================================ */
+.eyebrow{ background: var(--paper-2); border-bottom: var(--border); padding: 7px var(--gutter); position: relative; z-index: 2; }
+.eyebrow-inner{
+  max-width: var(--max); margin: 0 auto;
+  display: flex; flex-wrap: wrap; gap: 0.4rem 0;
+  font-family: var(--mono); font-size: 0.7rem; color: var(--ink-3);
+}
+.eyebrow-inner span:not(:last-child)::after{ content: ' · '; }
 
-    /* ============================================================
-       HERO
-       ============================================================ */
-    .hero{ border-bottom: var(--border); padding: 60px var(--gutter) 52px; }
-    .hero-inner{
-      max-width: var(--max); margin: 0 auto; display: grid;
-      grid-template-columns: 1fr 360px; gap: 3.5rem; align-items: center;
-    }
-    .kicker{
-      font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--pink); margin-bottom: 0.9rem; display: inline-flex; align-items: center; gap: 0.5rem;
-    }
-    .kicker::before{ content: ''; width: 22px; height: 2px; background: var(--pink); }
-    .h1{ font-family: var(--display); font-size: clamp(2.1rem, 5vw, 4rem); line-height: 1.08; margin-bottom: 1.1rem; }
-    .h1 em{ font-style: normal; color: var(--saffron); }
-    .lede{ font-size: 1.02rem; color: var(--ink-2); max-width: 48ch; line-height: 1.75; margin-bottom: 1.9rem; }
-    .btn-row{ display: flex; flex-wrap: wrap; gap: 0.7rem; }
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+.nav{ background: var(--paper); border-bottom: var(--border); position: sticky; top: 0; z-index: 50; }
+.nav-inner{
+  max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter);
+  height: 70px; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
+}
+.brand{ display: flex; align-items: center; gap: 0.65rem; white-space: nowrap; }
+.brand-mark{
+  width: 44px; height: 44px; border: 2.5px solid var(--ink); background: var(--paper-2);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; border-radius: 50%;
+  box-shadow: 2px 2px 0 var(--ink);
+}
+.brand-mark svg{ width: 100%; height: 100%; }
+.brand-text{ line-height: 1.15; }
+.brand-text strong{ display: block; font-family: var(--display); font-size: 0.92rem; letter-spacing: 0.01em; }
+.brand-text small{
+  display: block; font-family: var(--condensed); font-size: 0.58rem;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); font-weight: 500;
+}
+.nav-links{ display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.nav-links a{
+  font-family: var(--condensed); font-size: 0.8rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.05em; border-bottom: 2px solid transparent; padding-bottom: 3px;
+  transition: color .15s, border-color .15s;
+}
+.nav-links a:hover{ color: var(--saffron); border-color: var(--saffron); }
+.nav-links a:focus-visible{ outline: 2px solid var(--saffron); outline-offset: 3px; }
 
-    .side-card{ border: var(--border); box-shadow: var(--shadow-lg); background: var(--paper-2); border-radius: 22px; overflow: hidden; max-width: 100%; }
-    .side-card-tag{
-      background: var(--ink); color: var(--paper); font-family: var(--mono); font-size: 0.62rem;
-      letter-spacing: 0.09em; text-transform: uppercase; padding: 6px 11px; border-bottom: var(--border);
-      display: flex; justify-content: space-between;
-    }
-    .side-card-art{
-      aspect-ratio: 4/5; border-bottom: var(--border);
-      background: linear-gradient(160deg, var(--paper-soft) 0%, var(--saffron-soft) 100%);
-      display: flex; align-items: center; justify-content: center; padding: 6%;
-    }
-    .side-card-art svg{ width: 100%; height: 100%; }
-    .side-card-foot{ padding: 10px 13px; font-family: var(--mono); font-size: 0.65rem; color: var(--ink-3); }
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn{
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  font-family: var(--condensed); font-size: 0.84rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.06em; padding: 11px 22px; border: var(--border); box-shadow: var(--shadow);
+  cursor: pointer; transition: transform .12s, box-shadow .12s; white-space: nowrap; border-radius: 999px;
+}
+.btn:hover{ transform: translate(2px,2px); box-shadow: 2px 2px 0 var(--ink); }
+.btn:active{ transform: translate(4px,4px); box-shadow: none; }
+.btn:focus-visible{ outline: 2px solid var(--saffron); outline-offset: 3px; }
+.btn-saffron{ background: var(--saffron); color: var(--paper); }
+.btn-pink{    background: var(--pink);    color: var(--paper); }
+.btn-lilac{   background: var(--lilac);   color: var(--paper); }
+.btn-sky{     background: var(--sky);     color: var(--paper); }
+.btn-green{   background: var(--green);   color: var(--paper); }
+.btn-paper{   background: var(--paper);   color: var(--ink); }
+.btn-ghost{   background: transparent;    color: var(--ink); box-shadow: none; border-radius: 999px; }
+.btn-ghost:hover{ transform: none; background: var(--paper-2); }
+.btn[disabled]{ opacity: 0.45; cursor: not-allowed; box-shadow: none; transform: none; }
+.btn-sm{ padding: 8px 16px; font-size: 0.76rem; }
 
-    /* ============================================================
-       STATS
-       ============================================================ */
-    .stats{ background: var(--paper-2); border-bottom: var(--border); padding: 20px var(--gutter); }
-    .stats-inner{ max-width: var(--max); margin: 0 auto; display: flex; flex-wrap: wrap; }
-    .stat{ flex: 1 0 auto; padding: 4px 22px; border-right: var(--border); }
-    .stat:first-child{ padding-left: 0; }
-    .stat:last-child{ border-right: none; }
-    .stat-num{ font-family: var(--display); font-size: 2.1rem; line-height: 1; transition: color .2s; }
-    .stat-label{
-      font-family: var(--condensed); font-size: 0.72rem; text-transform: uppercase;
-      letter-spacing: 0.06em; color: var(--ink-3); margin-top: 4px;
-    }
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{ border-bottom: var(--border); padding: 64px var(--gutter) 56px; position: relative; overflow: hidden; }
+.hero-inner{
+  max-width: var(--max); margin: 0 auto; display: grid;
+  grid-template-columns: 1fr 380px; gap: 3.5rem; align-items: center; position: relative; z-index: 2;
+}
+.kicker{
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--pink); margin-bottom: 0.9rem; display: inline-flex; align-items: center; gap: 0.5rem;
+}
+.kicker::before{ content: ''; width: 22px; height: 2px; background: var(--pink); }
+.h1{ font-family: var(--display); font-size: clamp(2.1rem, 5vw, 4rem); line-height: 1.1; margin-bottom: 1.1rem; }
+.h1 em{ font-style: normal; color: var(--saffron); }
+.lede{ font-size: 1.02rem; color: var(--ink-2); max-width: 48ch; line-height: 1.78; margin-bottom: 1.9rem; }
+.btn-row{ display: flex; flex-wrap: wrap; gap: 0.7rem; }
 
-    /* ============================================================
-       SOCIAL STRIP
-       ============================================================ */
-    .social{ background: var(--paper-2); border-bottom: var(--border); padding: 13px var(--gutter); }
-    .social-inner{ max-width: var(--max); margin: 0 auto; display: flex; flex-wrap: wrap; gap: 0.4rem 1.3rem; align-items: center; }
-    .social-label{ font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
-    .social-link{ font-family: var(--condensed); font-size: 0.8rem; font-weight: 600; border-bottom: 1.5px solid var(--paper-3); padding-bottom: 1px; transition: color .15s, border-color .15s; }
-    .social-link:hover{ color: var(--saffron); border-color: var(--saffron); }
+.side-card{ border: var(--border); box-shadow: var(--shadow-lg); background: var(--paper-2); border-radius: 26px; overflow: hidden; max-width: 100%; }
+.side-card-tag{
+  background: var(--ink); color: var(--paper); font-family: var(--mono); font-size: 0.62rem;
+  letter-spacing: 0.09em; text-transform: uppercase; padding: 7px 12px; border-bottom: var(--border);
+  display: flex; justify-content: space-between;
+}
+.side-card-art{
+  aspect-ratio: 4/5; border-bottom: var(--border);
+  background: linear-gradient(160deg, #FBEAD2 0%, #FBD9B8 55%, #F7D7DF 100%);
+  display: flex; align-items: center; justify-content: center; padding: 6%;
+}
+.side-card-art svg{ width: 100%; height: 100%; }
+.side-card-foot{ padding: 11px 14px; font-family: var(--mono); font-size: 0.65rem; color: var(--ink-3); }
 
-    /* ============================================================
-       SECTION SCAFFOLDING
-       ============================================================ */
-    section{ border-bottom: var(--border); }
-    .sec-inner{ max-width: var(--max); margin: 0 auto; padding: 56px var(--gutter); }
-    .sec-head{
-      display: flex; justify-content: space-between; align-items: flex-start; gap: 2rem;
-      border-bottom: var(--border); padding-bottom: 1.3rem; margin-bottom: 2.4rem;
-    }
-    .sec-tag{ font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 0.4rem; }
-    .h2{ font-family: var(--display); font-size: clamp(1.6rem, 3.3vw, 2.5rem); line-height: 1.1; }
-    .h2 em{ font-style: normal; color: var(--saffron); }
-    .pill{
-      font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase;
-      background: var(--paper-3); border: 1.5px solid var(--ink); padding: 3px 9px; white-space: nowrap; border-radius: 999px;
-    }
+/* ============================================================
+   STATS
+   ============================================================ */
+.stats{ background: var(--paper-2); border-bottom: var(--border); padding: 22px var(--gutter); position: relative; z-index: 2; }
+.stats-inner{ max-width: var(--max); margin: 0 auto; display: flex; flex-wrap: wrap; }
+.stat{ flex: 1 0 auto; padding: 4px 22px; border-right: var(--border); }
+.stat:first-child{ padding-left: 0; }
+.stat:last-child{ border-right: none; }
+.stat-num{ font-family: var(--display); font-size: 2.15rem; line-height: 1; transition: color .2s; }
+.stat-label{
+  font-family: var(--condensed); font-size: 0.72rem; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--ink-3); margin-top: 4px;
+}
 
-    .split{ display: grid; grid-template-columns: 1fr 1fr; border: var(--border); box-shadow: var(--shadow-lg); border-radius: 18px; overflow: hidden; }
-    .split > div{ padding: 2rem; }
-    .split > div:first-child{ border-right: var(--border); }
-    .split-label{
-      font-family: var(--condensed); font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.09em; color: var(--pink); padding-bottom: 0.85rem; border-bottom: var(--border); margin-bottom: 0.85rem;
-    }
-    .split p{ color: var(--ink-2); font-size: 0.98rem; line-height: 1.78; }
+/* ============================================================
+   SOCIAL STRIP
+   ============================================================ */
+.social{ background: var(--paper-2); border-bottom: var(--border); padding: 13px var(--gutter); position: relative; z-index: 2; }
+.social-inner{ max-width: var(--max); margin: 0 auto; display: flex; flex-wrap: wrap; gap: 0.4rem 1.3rem; align-items: center; }
+.social-label{ font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+.social-link{ font-family: var(--condensed); font-size: 0.8rem; font-weight: 600; border-bottom: 1.5px solid var(--paper-3); padding-bottom: 1px; transition: color .15s, border-color .15s; }
+.social-link:hover{ color: var(--saffron); border-color: var(--saffron); }
 
-    .callout{ background: var(--saffron); border: var(--border); box-shadow: var(--shadow-lg); padding: 2.4rem; text-align: center; margin: 3rem 0; border-radius: 22px; }
-    .callout-quote{ font-family: var(--display); font-size: clamp(1.15rem, 2.7vw, 1.9rem); color: var(--paper); line-height: 1.3; margin-bottom: 0.75rem; }
-    .callout-attr{ font-family: var(--mono); font-size: 0.68rem; color: rgba(255,246,233,0.82); letter-spacing: 0.08em; text-transform: uppercase; }
+/* ============================================================
+   SECTION SCAFFOLDING
+   ============================================================ */
+section{ border-bottom: var(--border); position: relative; z-index: 2; }
+.sec-inner{ max-width: var(--max); margin: 0 auto; padding: 58px var(--gutter); position: relative; }
+.sec-head{
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 2rem;
+  border-bottom: var(--border); padding-bottom: 1.3rem; margin-bottom: 2.4rem;
+}
+.sec-tag{ font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 0.4rem; }
+.h2{ font-family: var(--display); font-size: clamp(1.6rem, 3.3vw, 2.5rem); line-height: 1.15; }
+.h2 em{ font-style: normal; color: var(--saffron); }
+.pill{
+  font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase;
+  background: var(--paper-3); border: 1.5px solid var(--ink); padding: 4px 11px; white-space: nowrap; border-radius: 999px;
+}
 
-    .trio{ display: grid; grid-template-columns: repeat(3,1fr); border: var(--border); box-shadow: var(--shadow-lg); border-radius: 18px; overflow: hidden; }
-    .trio > div{ padding: 1.7rem; border-right: var(--border); }
-    .trio > div:last-child{ border-right: none; }
-    .trio-icon{ font-size: 1.6rem; margin-bottom: 0.55rem; }
-    .trio-title{ font-family: var(--condensed); font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.35rem; }
-    .trio-text{ font-size: 0.82rem; color: var(--ink-3); line-height: 1.6; }
+.split{ display: grid; grid-template-columns: 1fr 1fr; border: var(--border); box-shadow: var(--shadow-lg); border-radius: 22px; overflow: hidden; }
+.split > div{ padding: 2.1rem; }
+.split > div:first-child{ border-right: var(--border); }
+.split-label{
+  font-family: var(--condensed); font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.09em; color: var(--pink); padding-bottom: 0.85rem; border-bottom: var(--border); margin-bottom: 0.85rem;
+}
+.split p{ color: var(--ink-2); font-size: 0.98rem; line-height: 1.78; }
 
-    .cta{
-      background: var(--green); border: var(--border); box-shadow: var(--shadow-lg); padding: 2.4rem; border-radius: 22px;
-      display: flex; align-items: center; justify-content: space-between; gap: 1.6rem; flex-wrap: wrap;
-    }
-    .cta-text{ font-family: var(--display); font-size: clamp(1.15rem, 2.3vw, 1.8rem); color: var(--paper); line-height: 1.22; }
-    .cta-text small{ display: block; font-family: var(--sans); font-size: 0.84rem; font-weight: 400; color: rgba(255,246,233,0.78); margin-top: 0.4rem; }
+.callout{ background: var(--saffron); border: var(--border); box-shadow: var(--shadow-lg); padding: 2.5rem; text-align: center; margin: 3rem 0; border-radius: 26px; position: relative; }
+.callout-quote{ font-family: var(--display); font-size: clamp(1.15rem, 2.7vw, 1.9rem); color: var(--paper); line-height: 1.35; margin-bottom: 0.75rem; }
+.callout-attr{ font-family: var(--mono); font-size: 0.68rem; color: rgba(255,246,233,0.82); letter-spacing: 0.08em; text-transform: uppercase; }
 
-    /* ============================================================
-       ROUTINE TIMELINE
-       ============================================================ */
-    .timeline{ border: var(--border); box-shadow: var(--shadow-lg); border-radius: 18px; overflow: hidden; }
-    .slot{
-      display: grid; grid-template-columns: 110px 1fr 44px;
-      border-bottom: var(--border); align-items: stretch; transition: background .15s;
-    }
-    .slot:last-child{ border-bottom: none; }
-    .slot.done{ background: var(--paper-2); }
-    .slot-time{
-      background: var(--ink); color: var(--paper); font-family: var(--mono); font-size: 0.72rem;
-      display: flex; align-items: center; justify-content: center; text-align: center;
-      border-right: var(--border); padding: 0.6rem; letter-spacing: 0.02em;
-    }
-    .slot-body{ padding: 1.1rem 1.5rem; display: flex; flex-direction: column; gap: 0.2rem; justify-content: center; }
-    .slot-title{ font-family: var(--condensed); font-size: 0.98rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; }
-    .slot.done .slot-title{ text-decoration: line-through; color: var(--ink-3); }
-    .slot-sub{ font-size: 0.84rem; color: var(--ink-3); line-height: 1.5; }
-    .slot-check{
-      border-left: var(--border); display: flex; align-items: center; justify-content: center;
-      background: transparent; border-top: none; border-bottom: none; border-right: none; cursor: pointer;
-    }
-    .checkbox{
-      width: 22px; height: 22px; border: 2.5px solid var(--ink); background: var(--paper);
-      display: flex; align-items: center; justify-content: center; font-family: var(--display);
-      font-size: 0.85rem; line-height: 1; transition: background .12s, color .12s; border-radius: 50%;
-    }
-    .slot.done .checkbox{ background: var(--green); color: var(--paper); }
-    .slot-check:focus-visible{ outline: 2px solid var(--saffron); outline-offset: 2px; }
+.trio{ display: grid; grid-template-columns: repeat(3,1fr); border: var(--border); box-shadow: var(--shadow-lg); border-radius: 22px; overflow: hidden; }
+.trio > div{ padding: 1.8rem; border-right: var(--border); }
+.trio > div:last-child{ border-right: none; }
+.trio-icon{ font-size: 1.7rem; margin-bottom: 0.55rem; }
+.trio-title{ font-family: var(--condensed); font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.35rem; }
+.trio-text{ font-size: 0.83rem; color: var(--ink-3); line-height: 1.6; }
 
-    .progress-row{
-      display: flex; align-items: center; gap: 1rem; margin-bottom: 1.6rem;
-      font-family: var(--mono); font-size: 0.76rem; color: var(--ink-3); flex-wrap: wrap;
-    }
-    .progress-bar{
-      flex: 1; min-width: 160px; height: 14px; border: 2px solid var(--ink); background: var(--paper-2); overflow: hidden; border-radius: 999px;
-    }
-    .progress-fill{ height: 100%; background: var(--saffron); width: 0%; transition: width .25s ease; }
-    .reset-link{
-      font-family: var(--condensed); font-size: 0.76rem; font-weight: 600; text-transform: uppercase;
-      letter-spacing: 0.05em; color: var(--ink-3); border-bottom: 1.5px solid var(--paper-3);
-      background: none; border-top:none; border-left:none; border-right:none; cursor: pointer; padding: 0 0 1px;
-    }
-    .reset-link:hover{ color: var(--saffron); border-color: var(--saffron); }
+.cta{
+  background: var(--green); border: var(--border); box-shadow: var(--shadow-lg); padding: 2.5rem; border-radius: 26px;
+  display: flex; align-items: center; justify-content: space-between; gap: 1.6rem; flex-wrap: wrap;
+}
+.cta-text{ font-family: var(--display); font-size: clamp(1.15rem, 2.3vw, 1.8rem); color: var(--paper); line-height: 1.28; }
+.cta-text small{ display: block; font-family: var(--sans); font-size: 0.84rem; font-weight: 400; color: rgba(255,246,233,0.78); margin-top: 0.4rem; }
 
-    /* ============================================================
-       BED ROTTING MENU
-       ============================================================ */
-    .rot-grid{ display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.1rem; }
-    .rot-card{
-      border: var(--border); border-radius: 18px; box-shadow: var(--shadow); background: var(--paper-2);
-      padding: 1.4rem; display: flex; gap: 1rem; align-items: flex-start; cursor: pointer;
-      transition: transform .12s, box-shadow .12s, background .12s;
-    }
-    .rot-card:hover{ transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--ink); }
-    .rot-card.picked{ background: var(--pink-soft); }
-    .rot-icon{
-      width: 46px; height: 46px; border: 2px solid var(--ink); border-radius: 50%; background: var(--paper);
-      display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0;
-    }
-    .rot-title{ font-family: var(--condensed); font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 0.3rem; }
-    .rot-text{ font-size: 0.83rem; color: var(--ink-3); line-height: 1.55; }
-    .rot-pick-label{ margin-top: 1.5rem; font-family: var(--mono); font-size: 0.78rem; color: var(--ink-3); }
-    .rot-pick-name{ color: var(--saffron); font-weight: 700; }
+/* ============================================================
+   ROUTINE TIMELINE
+   ============================================================ */
+.timeline{ border: var(--border); box-shadow: var(--shadow-lg); border-radius: 22px; overflow: hidden; }
+.slot{
+  display: grid; grid-template-columns: 116px 1fr 48px;
+  border-bottom: var(--border); align-items: stretch; transition: background .15s;
+}
+.slot:last-child{ border-bottom: none; }
+.slot.done{ background: linear-gradient(90deg, var(--paper-2), var(--paper-3)); }
+.slot-time{
+  background: var(--ink); color: var(--paper); font-family: var(--mono); font-size: 0.72rem;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  border-right: var(--border); padding: 0.6rem; letter-spacing: 0.02em;
+}
+.slot-body{ padding: 1.15rem 1.5rem; display: flex; flex-direction: column; gap: 0.2rem; justify-content: center; }
+.slot-title{ font-family: var(--condensed); font-size: 0.98rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; display: flex; align-items: center; gap: 0.45rem; }
+.slot.done .slot-title{ text-decoration: line-through; color: var(--ink-3); }
+.slot-sub{ font-size: 0.84rem; color: var(--ink-3); line-height: 1.5; }
+.slot-check{
+  border-left: var(--border); display: flex; align-items: center; justify-content: center;
+  background: transparent; border-top: none; border-bottom: none; border-right: none; cursor: pointer;
+}
+.checkbox{
+  width: 24px; height: 24px; border: 2.5px solid var(--ink); background: var(--paper);
+  display: flex; align-items: center; justify-content: center; font-family: var(--display);
+  font-size: 0.85rem; line-height: 1; transition: background .15s, color .15s, transform .15s; border-radius: 50%;
+}
+.slot.done .checkbox{ background: var(--green); color: var(--paper); transform: scale(1.1); }
+.slot-check:focus-visible{ outline: 2px solid var(--saffron); outline-offset: 2px; }
 
-    /* ============================================================
-       QUIZ
-       ============================================================ */
-    .quiz-card{ border: var(--border); border-radius: 22px; box-shadow: var(--shadow-lg); background: var(--paper-2); padding: 2.2rem; }
-    .quiz-progress{ font-family: var(--mono); font-size: 0.72rem; color: var(--ink-3); margin-bottom: 1rem; letter-spacing: 0.04em; }
-    .quiz-question{ font-family: var(--condensed); font-size: 1.25rem; font-weight: 700; margin-bottom: 1.4rem; line-height: 1.4; }
-    .quiz-options{ display: flex; flex-direction: column; gap: 0.7rem; }
-    .quiz-option{
-      border: 2.5px solid var(--ink); border-radius: 14px; background: var(--paper);
-      padding: 0.9rem 1.1rem; font-size: 0.95rem; text-align: left; cursor: pointer;
-      transition: background .12s, transform .1s, box-shadow .1s; box-shadow: 3px 3px 0 var(--ink);
-    }
-    .quiz-option:hover{ transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--ink); background: var(--saffron-soft); }
-    .quiz-option:active{ transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--ink); }
-    .quiz-option:focus-visible{ outline: 2px solid var(--saffron); outline-offset: 2px; }
-    .quiz-result{ text-align: center; }
-    .quiz-badge{
-      width: 84px; height: 84px; margin: 0 auto 1.2rem; border-radius: 50%; border: var(--border);
-      background: var(--saffron); display: flex; align-items: center; justify-content: center; font-size: 2.4rem;
-    }
-    .quiz-title{ font-family: var(--display); font-size: clamp(1.3rem, 2.8vw, 1.9rem); margin-bottom: 0.7rem; }
-    .quiz-message{ font-size: 0.98rem; color: var(--ink-2); line-height: 1.75; max-width: 46ch; margin: 0 auto 1.6rem; }
-    .quiz-actions{ display: flex; justify-content: center; gap: 0.7rem; flex-wrap: wrap; }
+.progress-row{
+  display: flex; align-items: center; gap: 1rem; margin-bottom: 1.6rem;
+  font-family: var(--mono); font-size: 0.76rem; color: var(--ink-3); flex-wrap: wrap;
+}
+.progress-bar{
+  flex: 1; min-width: 160px; height: 16px; border: 2px solid var(--ink); background: var(--paper-2); overflow: hidden; border-radius: 999px;
+}
+.progress-fill{ height: 100%; background: linear-gradient(90deg, var(--saffron), var(--pink)); width: 0%; transition: width .3s ease; }
+.reset-link{
+  font-family: var(--condensed); font-size: 0.76rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--ink-3); border-bottom: 1.5px solid var(--paper-3);
+  background: none; border-top:none; border-left:none; border-right:none; cursor: pointer; padding: 0 0 1px;
+}
+.reset-link:hover{ color: var(--saffron); border-color: var(--saffron); }
 
-    /* ============================================================
-       RULES LIST
-       ============================================================ */
-    .numbered{ border: var(--border); box-shadow: var(--shadow-lg); border-radius: 18px; overflow: hidden; }
-    .numbered-row{ display: grid; grid-template-columns: 70px 1fr; border-bottom: var(--border); }
-    .numbered-row:last-child{ border-bottom: none; }
-    .numbered-idx{
-      background: var(--ink); color: var(--paper); font-family: var(--display); font-size: 1.5rem;
-      display: flex; align-items: center; justify-content: center; border-right: var(--border);
-    }
-    .numbered-body{ padding: 1.2rem 1.7rem; }
-    .numbered-title{ font-family: var(--condensed); font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 0.3rem; }
-    .numbered-text{ font-size: 0.85rem; color: var(--ink-3); line-height: 1.6; }
+/* ============================================================
+   BED ROTTING MENU
+   ============================================================ */
+.rot-grid{ display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.1rem; }
+.rot-card{
+  border: var(--border); border-radius: 20px; box-shadow: var(--shadow); background: var(--paper-2);
+  padding: 1.4rem; display: flex; gap: 1rem; align-items: flex-start; cursor: pointer;
+  transition: transform .14s, box-shadow .14s, background .14s;
+}
+.rot-card:hover{ transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--ink); }
+.rot-card.picked{ background: var(--pink-soft); }
+.rot-icon{
+  width: 48px; height: 48px; border: 2px solid var(--ink); border-radius: 50%; background: var(--paper);
+  display: flex; align-items: center; justify-content: center; font-size: 1.35rem; flex-shrink: 0;
+}
+.rot-title{ font-family: var(--condensed); font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 0.3rem; }
+.rot-text{ font-size: 0.83rem; color: var(--ink-3); line-height: 1.55; }
+.rot-pick-label{ margin-top: 1.5rem; font-family: var(--mono); font-size: 0.78rem; color: var(--ink-3); }
+.rot-pick-name{ color: var(--saffron); font-weight: 700; }
 
-    /* ============================================================
-       REGISTRATION FORM
-       ============================================================ */
-    .register-wrap{ display: grid; grid-template-columns: 1fr 1fr; gap: 2.4rem; align-items: start; }
-    .form-card{ border: var(--border); border-radius: 22px; box-shadow: var(--shadow-lg); background: var(--paper-2); padding: 2.1rem; }
-    .field{ margin-bottom: 1.2rem; }
-    .field label{
-      display: block; font-family: var(--condensed); font-size: 0.78rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.45rem; color: var(--ink-2);
-    }
-    .field input[type="text"], .field select{
-      width: 100%; border: 2.5px solid var(--ink); border-radius: 12px; background: var(--paper);
-      padding: 0.7rem 0.9rem; font-family: var(--sans); font-size: 0.95rem; color: var(--ink);
-    }
-    .field input:focus-visible, .field select:focus-visible{ outline: 2px solid var(--saffron); outline-offset: 2px; }
-    .field-hours{ display: flex; align-items: center; gap: 0.8rem; }
-    .field-hours input[type="range"]{ flex: 1; }
-    .field-hours-val{ font-family: var(--display); font-size: 1.3rem; color: var(--saffron); min-width: 3.2ch; text-align: right; }
-    .checkrow{ display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.85rem; color: var(--ink-3); margin-bottom: 1.4rem; }
-    .checkrow input{ margin-top: 0.2rem; }
+/* ============================================================
+   QUIZ — upgraded with progress dots + reveal animation
+   ============================================================ */
+.quiz-card{ border: var(--border); border-radius: 26px; box-shadow: var(--shadow-lg); background: var(--paper-2); padding: 2.3rem; position: relative; overflow: hidden; }
+.quiz-dots{ display: flex; gap: 0.4rem; margin-bottom: 1.3rem; flex-wrap: wrap; }
+.quiz-dot{ width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--ink); background: var(--paper); transition: background .2s; }
+.quiz-dot.active{ background: var(--saffron); }
+.quiz-dot.filled{ background: var(--pink); }
+.quiz-question{ font-family: var(--condensed); font-size: 1.28rem; font-weight: 700; margin-bottom: 1.4rem; line-height: 1.42; animation: fadeUp .35s ease; }
+@keyframes fadeUp{ from{ opacity: 0; transform: translateY(8px); } to{ opacity: 1; transform: translateY(0); } }
+.quiz-options{ display: flex; flex-direction: column; gap: 0.7rem; }
+.quiz-option{
+  border: 2.5px solid var(--ink); border-radius: 16px; background: var(--paper);
+  padding: 0.95rem 1.15rem; font-size: 0.95rem; text-align: left; cursor: pointer;
+  transition: background .14s, transform .12s, box-shadow .12s; box-shadow: 3px 3px 0 var(--ink);
+  animation: fadeUp .35s ease;
+}
+.quiz-option:hover{ transform: translate(-1px,-1px); box-shadow: 5px 5px 0 var(--ink); background: var(--saffron-soft); }
+.quiz-option:active{ transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--ink); }
+.quiz-option:focus-visible{ outline: 2px solid var(--saffron); outline-offset: 2px; }
+.quiz-result{ text-align: center; animation: fadeUp .4s ease; }
+.quiz-badge{
+  width: 92px; height: 92px; margin: 0 auto 1.2rem; border-radius: 50%; border: var(--border);
+  background: var(--saffron); display: flex; align-items: center; justify-content: center; font-size: 2.6rem;
+  box-shadow: var(--shadow);
+  animation: pop .4s ease;
+}
+@keyframes pop{ 0%{ transform: scale(0.4); } 70%{ transform: scale(1.1); } 100%{ transform: scale(1); } }
+.quiz-score{ font-family: var(--mono); font-size: 0.74rem; color: var(--ink-3); letter-spacing: 0.06em; margin-bottom: 0.6rem; }
+.quiz-title{ font-family: var(--display); font-size: clamp(1.3rem, 2.8vw, 1.95rem); margin-bottom: 0.7rem; }
+.quiz-message{ font-size: 0.98rem; color: var(--ink-2); line-height: 1.78; max-width: 46ch; margin: 0 auto 1.6rem; }
+.quiz-actions{ display: flex; justify-content: center; gap: 0.7rem; flex-wrap: wrap; }
+.confetti{ position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.confetti span{
+  position: absolute; top: -10%; font-size: 1.1rem;
+  animation: fall linear forwards;
+}
+@keyframes fall{ to{ transform: translateY(420px) rotate(360deg); opacity: 0; } }
 
-    .member-card{ border: var(--border); border-radius: 22px; box-shadow: var(--shadow-lg); background: var(--saffron); padding: 2.1rem; color: var(--paper); }
-    .member-card.hidden{ display: none; }
-    .member-card-tag{ font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.85; margin-bottom: 0.9rem; }
-    .member-card-name{ font-family: var(--display); font-size: 1.5rem; margin-bottom: 0.3rem; }
-    .member-card-role{ font-family: var(--condensed); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.9; margin-bottom: 1.2rem; }
-    .member-card-stat{ display: flex; justify-content: space-between; font-size: 0.88rem; padding: 0.5rem 0; border-top: 1px solid rgba(255,246,233,0.3); }
-    .member-card-id{ font-family: var(--mono); font-size: 0.7rem; opacity: 0.75; margin-top: 1.2rem; }
-    .placeholder-note{ font-size: 0.92rem; color: var(--ink-3); line-height: 1.7; }
+/* ============================================================
+   MINI GAME — Nap Catcher
+   ============================================================ */
+.game-wrap{ display: grid; grid-template-columns: 1.3fr 1fr; gap: 2rem; align-items: start; }
+.game-box{
+  position: relative; height: 360px; border: var(--border); border-radius: 22px; overflow: hidden;
+  background: linear-gradient(180deg, var(--sky-soft), var(--paper-2));
+  box-shadow: var(--shadow-lg); cursor: default;
+  max-width: 100%;
+}
+.game-zzz{
+  position: absolute; font-family: var(--display); font-size: 1.6rem; color: var(--ink);
+  cursor: pointer; user-select: none; transition: transform .1s;
+  filter: drop-shadow(2px 2px 0 rgba(36,20,7,0.2));
+}
+.game-zzz:hover{ transform: scale(1.15); }
+.game-hud{ position: absolute; top: 12px; left: 12px; right: 12px; display: flex; justify-content: space-between; font-family: var(--mono); font-size: 0.72rem; color: var(--ink-2); background: rgba(255,246,233,0.85); border: 1.5px solid var(--ink); border-radius: 999px; padding: 5px 14px; }
+.game-overlay{
+  position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: rgba(255,246,233,0.94); text-align: center; padding: 1.5rem; gap: 0.9rem;
+}
+.game-overlay.hidden{ display: none; }
+.game-overlay-title{ font-family: var(--display); font-size: 1.4rem; }
+.game-overlay-sub{ font-size: 0.9rem; color: var(--ink-3); max-width: 32ch; line-height: 1.6; }
 
-    /* ============================================================
-       FOOTER
-       ============================================================ */
-    footer{ background: var(--ink); color: var(--paper); }
-    .foot-inner{ max-width: var(--max); margin: 0 auto; padding: 40px var(--gutter) 26px; display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 2.4rem; }
-    .foot-brand{ font-family: var(--display); font-size: 1.2rem; margin-bottom: 0.55rem; }
-    .foot-tag{ font-size: 0.8rem; color: rgba(255,246,233,0.55); line-height: 1.6; max-width: 32ch; }
-    .foot-head{ font-family: var(--condensed); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--saffron-2); margin-bottom: 0.8rem; }
-    .foot-links{ display: flex; flex-direction: column; gap: 0.42rem; }
-    .foot-links a{ font-size: 0.82rem; color: rgba(255,246,233,0.7); transition: color .15s; }
-    .foot-links a:hover{ color: var(--paper); }
-    .foot-bottom{ border-top: 1px solid rgba(255,246,233,0.14); padding: 14px var(--gutter); max-width: var(--max); margin: 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.6rem; }
-    .foot-bottom p{ font-family: var(--mono); font-size: 0.63rem; color: rgba(255,246,233,0.4); letter-spacing: 0.03em; }
+.game-side{ border: var(--border); border-radius: 22px; box-shadow: var(--shadow-lg); background: var(--paper-2); padding: 1.8rem; }
+.game-side-title{ font-family: var(--condensed); font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.6rem; }
+.game-side-text{ font-size: 0.86rem; color: var(--ink-3); line-height: 1.65; margin-bottom: 1rem; }
+.game-best{ font-family: var(--mono); font-size: 0.78rem; color: var(--ink-2); margin-bottom: 1.1rem; }
+.game-best b{ color: var(--saffron); font-family: var(--display); font-size: 1rem; }
 
-    /* ============================================================
-       RESPONSIVE — everything adapts gracefully, no horizontal scroll
-       ============================================================ */
-    @media (max-width: 920px){
-      .hero-inner{ grid-template-columns: 1fr; }
-      .side-card{ max-width: 340px; margin: 0 auto; }
-      .split, .trio{ grid-template-columns: 1fr; }
-      .split > div:first-child{ border-right: none; border-bottom: var(--border); }
-      .trio > div{ border-right: none; border-bottom: var(--border); }
-      .trio > div:last-child{ border-bottom: none; }
-      .foot-inner{ grid-template-columns: 1fr; gap: 1.7rem; }
-      .rot-grid{ grid-template-columns: 1fr; }
-      .register-wrap{ grid-template-columns: 1fr; }
-      .sec-head{ flex-direction: column; gap: 0.8rem; }
-    }
-    @media (max-width: 640px){
-      .nav-links{ display: none; }
-      .nav-inner .btn{ display: none; }
-      .stats-inner{ flex-wrap: wrap; }
-      .stat{ flex: 1 0 42%; border-right: none; border-bottom: var(--border); padding: 10px 0; }
-      .stat:nth-last-child(-n+2){ border-bottom: none; }
-      .slot{ grid-template-columns: 70px 1fr 36px; }
-      .slot-time{ font-size: 0.55rem; padding: 0.4rem; }
-      .slot-body{ padding: 0.8rem 1rem; }
-      .slot-title{ font-size: 0.85rem; }
-      .slot-sub{ font-size: 0.75rem; }
-      .numbered-row{ grid-template-columns: 44px 1fr; }
-      .numbered-idx{ font-size: 1.1rem; }
-      .numbered-body{ padding: 0.8rem 1rem; }
-      .cta{ flex-direction: column; text-align: center; }
-      .side-card{ max-width: 100%; }
-      .quiz-card{ padding: 1.5rem; }
-      .form-card{ padding: 1.5rem; }
-      .member-card{ padding: 1.5rem; }
-      .callout{ padding: 1.5rem; margin: 1.5rem 0; }
-      .btn-row .btn{ font-size: 0.75rem; padding: 8px 16px; }
-      .hero{ padding: 30px var(--gutter) 28px; }
-      .sec-inner{ padding: 30px var(--gutter); }
-    }
-    @media (max-width: 400px){
-      .brand-text small{ display: none; }
-      .brand{ gap: 0.3rem; }
-      .brand-mark{ width: 34px; height: 34px; }
-      .brand-text strong{ font-size: 0.75rem; }
-      .stat{ flex: 1 0 100%; border-bottom: var(--border); }
-      .stat:last-child{ border-bottom: none; }
-    }
-  </style>
+/* ============================================================
+   MEMORY PUZZLE — Match the Lazy Pair
+   ============================================================ */
+.puzzle-wrap{ display: grid; grid-template-columns: 1fr 320px; gap: 2rem; align-items: start; }
+.puzzle-grid{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.7rem; }
+.puzzle-card{
+  aspect-ratio: 1; border: 2.5px solid var(--ink); border-radius: 16px; background: var(--saffron);
+  display: flex; align-items: center; justify-content: center; font-size: 1.8rem; cursor: pointer;
+  box-shadow: 3px 3px 0 var(--ink); transition: transform .15s, box-shadow .15s, background .15s;
+  user-select: none;
+}
+.puzzle-card:hover{ transform: translate(-1px,-1px); box-shadow: 5px 5px 0 var(--ink); }
+.puzzle-card.flipped{ background: var(--paper); transform: none; box-shadow: 1px 1px 0 var(--ink); }
+.puzzle-card.matched{ background: var(--green-2); color: var(--paper); cursor: default; }
+.puzzle-card.matched:hover{ transform: none; box-shadow: 1px 1px 0 var(--ink); }
+.puzzle-side{ border: var(--border); border-radius: 22px; box-shadow: var(--shadow-lg); background: var(--paper-2); padding: 1.8rem; }
+.puzzle-stats{ display: flex; justify-content: space-between; font-family: var(--mono); font-size: 0.78rem; color: var(--ink-2); margin-bottom: 1.1rem; }
+.puzzle-stats b{ color: var(--saffron); font-family: var(--display); font-size: 1.05rem; }
+.puzzle-msg{ font-size: 0.86rem; color: var(--ink-3); line-height: 1.65; margin-bottom: 1.1rem; min-height: 2.6em; }
+
+/* ============================================================
+   RULES LIST
+   ============================================================ */
+.numbered{ border: var(--border); box-shadow: var(--shadow-lg); border-radius: 22px; overflow: hidden; }
+.numbered-row{ display: grid; grid-template-columns: 72px 1fr; border-bottom: var(--border); }
+.numbered-row:last-child{ border-bottom: none; }
+.numbered-idx{
+  background: var(--ink); color: var(--paper); font-family: var(--display); font-size: 1.5rem;
+  display: flex; align-items: center; justify-content: center; border-right: var(--border);
+}
+.numbered-body{ padding: 1.25rem 1.7rem; }
+.numbered-title{ font-family: var(--condensed); font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 0.3rem; }
+.numbered-text{ font-size: 0.85rem; color: var(--ink-3); line-height: 1.6; }
+
+/* ============================================================
+   REGISTRATION FORM
+   ============================================================ */
+.register-wrap{ display: grid; grid-template-columns: 1fr 1fr; gap: 2.4rem; align-items: start; }
+.form-card{ border: var(--border); border-radius: 26px; box-shadow: var(--shadow-lg); background: var(--paper-2); padding: 2.2rem; }
+.field{ margin-bottom: 1.2rem; }
+.field label{
+  display: block; font-family: var(--condensed); font-size: 0.78rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.45rem; color: var(--ink-2);
+}
+.field input[type="text"], .field select{
+  width: 100%; border: 2.5px solid var(--ink); border-radius: 14px; background: var(--paper);
+  padding: 0.75rem 0.95rem; font-family: var(--sans); font-size: 0.95rem; color: var(--ink);
+}
+.field input:focus-visible, .field select:focus-visible{ outline: 2px solid var(--saffron); outline-offset: 2px; }
+.field-hours{ display: flex; align-items: center; gap: 0.8rem; }
+.field-hours input[type="range"]{ flex: 1; accent-color: var(--saffron); }
+.field-hours-val{ font-family: var(--display); font-size: 1.3rem; color: var(--saffron); min-width: 3.2ch; text-align: right; }
+.checkrow{ display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.85rem; color: var(--ink-3); margin-bottom: 1.4rem; }
+.checkrow input{ margin-top: 0.2rem; accent-color: var(--saffron); }
+
+.member-card{ border: var(--border); border-radius: 26px; box-shadow: var(--shadow-lg); background: linear-gradient(135deg, var(--saffron), var(--pink)); padding: 2.2rem; color: var(--paper); position: relative; overflow: hidden; }
+.member-card.hidden{ display: none; }
+.member-card-tag{ font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.9; margin-bottom: 0.9rem; }
+.member-card-name{ font-family: var(--display); font-size: 1.55rem; margin-bottom: 0.3rem; }
+.member-card-role{ font-family: var(--condensed); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.95; margin-bottom: 1.2rem; }
+.member-card-stat{ display: flex; justify-content: space-between; font-size: 0.88rem; padding: 0.5rem 0; border-top: 1px solid rgba(255,246,233,0.35); }
+.member-card-id{ font-family: var(--mono); font-size: 0.7rem; opacity: 0.85; margin-top: 1.2rem; }
+.member-card-sticker{ position: absolute; bottom: -10px; right: -10px; width: 70px; height: 70px; opacity: 0.4; }
+.placeholder-note{ font-size: 0.92rem; color: var(--ink-3); line-height: 1.7; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer{ background: var(--ink); color: var(--paper); position: relative; z-index: 2; }
+.foot-inner{ max-width: var(--max); margin: 0 auto; padding: 42px var(--gutter) 26px; display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 2.4rem; }
+.foot-brand{ font-family: var(--display); font-size: 1.2rem; margin-bottom: 0.55rem; }
+.foot-tag{ font-size: 0.8rem; color: rgba(255,246,233,0.55); line-height: 1.6; max-width: 32ch; }
+.foot-head{ font-family: var(--condensed); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--saffron-2); margin-bottom: 0.8rem; }
+.foot-links{ display: flex; flex-direction: column; gap: 0.42rem; }
+.foot-links a{ font-size: 0.82rem; color: rgba(255,246,233,0.7); transition: color .15s; }
+.foot-links a:hover{ color: var(--paper); }
+.foot-bottom{ border-top: 1px solid rgba(255,246,233,0.14); padding: 14px var(--gutter); max-width: var(--max); margin: 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.6rem; }
+.foot-bottom p{ font-family: var(--mono); font-size: 0.63rem; color: rgba(255,246,233,0.4); letter-spacing: 0.03em; }
+
+/* ============================================================
+   RESPONSIVE — everything adapts gracefully, no horizontal scroll
+   ============================================================ */
+@media (max-width: 1024px){
+  .hero-inner{ grid-template-columns: 1fr; }
+  .side-card{ max-width: 360px; margin: 0 auto; }
+  .rot-grid{ grid-template-columns: 1fr; }
+  .game-wrap{ grid-template-columns: 1fr; }
+  .puzzle-wrap{ grid-template-columns: 1fr; }
+  .game-box{ height: 300px; }
+}
+@media (max-width: 920px){
+  .split, .trio{ grid-template-columns: 1fr; }
+  .split > div:first-child{ border-right: none; border-bottom: var(--border); }
+  .trio > div{ border-right: none; border-bottom: var(--border); }
+  .trio > div:last-child{ border-bottom: none; }
+  .foot-inner{ grid-template-columns: 1fr; gap: 1.7rem; }
+  .register-wrap{ grid-template-columns: 1fr; }
+  .sec-head{ flex-direction: column; gap: 0.8rem; }
+  .puzzle-grid{ grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
+  .puzzle-side{ padding: 1.2rem; }
+}
+@media (max-width: 640px){
+  .nav-links{ display: none; }
+  .nav-inner .btn{ display: none; }
+  .stats-inner{ flex-wrap: wrap; }
+  .stat{ flex: 1 0 42%; border-right: none; border-bottom: var(--border); padding: 10px 0; }
+  .stat:nth-last-child(-n+2){ border-bottom: none; }
+  .slot{ grid-template-columns: 70px 1fr 40px; }
+  .slot-time{ font-size: 0.55rem; padding: 0.4rem; }
+  .slot-body{ padding: 0.8rem 1rem; }
+  .slot-title{ font-size: 0.82rem; }
+  .slot-sub{ font-size: 0.72rem; }
+  .numbered-row{ grid-template-columns: 44px 1fr; }
+  .numbered-idx{ font-size: 1.1rem; }
+  .numbered-body{ padding: 0.8rem 1rem; }
+  .cta{ flex-direction: column; text-align: center; }
+  .side-card{ max-width: 100%; }
+  .quiz-card{ padding: 1.5rem; }
+  .form-card{ padding: 1.5rem; }
+  .member-card{ padding: 1.5rem; }
+  .callout{ padding: 1.5rem; margin: 1.5rem 0; }
+  .btn-row .btn{ font-size: 0.75rem; padding: 8px 16px; }
+  .hero{ padding: 30px var(--gutter) 28px; }
+  .sec-inner{ padding: 30px var(--gutter); }
+  .game-box{ height: 260px; }
+  .game-hud{ font-size: 0.6rem; padding: 4px 10px; }
+  .puzzle-grid{ gap: 0.4rem; }
+  .puzzle-card{ font-size: 1.2rem; border-radius: 12px; }
+  .rot-card{ padding: 1rem; }
+  .split > div{ padding: 1.2rem; }
+  .trio > div{ padding: 1.2rem; }
+}
+@media (max-width: 400px){
+  .brand-text small{ display: none; }
+  .brand{ gap: 0.3rem; }
+  .brand-mark{ width: 34px; height: 34px; }
+  .brand-text strong{ font-size: 0.75rem; }
+  .stat{ flex: 1 0 100%; border-bottom: var(--border); }
+  .stat:last-child{ border-bottom: none; }
+  .puzzle-grid{ grid-template-columns: repeat(4, 1fr); gap: 0.3rem; }
+  .puzzle-card{ font-size: 1rem; border-width: 2px; }
+  .slot{ grid-template-columns: 56px 1fr 34px; }
+  .slot-time{ font-size: 0.48rem; padding: 0.2rem; }
+  .checkbox{ width: 20px; height: 20px; font-size: 0.7rem; }
+}
+</style>
 </head>
 <body>
+
+<!-- decorative floating panda stickers -->
+<svg class="sticker" style="top: 130px; left: 4%; width: 70px; --rot: -8deg;" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="50" cy="55" r="34" fill="#FFFDF8" stroke="#241407" stroke-width="4"/>
+  <circle cx="24" cy="26" r="13" fill="#241407"/><circle cx="76" cy="26" r="13" fill="#241407"/>
+  <ellipse cx="33" cy="52" rx="10" ry="12" fill="#241407"/><ellipse cx="67" cy="52" rx="10" ry="12" fill="#241407"/>
+  <circle cx="33" cy="50" r="3" fill="#FFFFFF"/><circle cx="67" cy="50" r="3" fill="#FFFFFF"/>
+  <ellipse cx="50" cy="64" rx="7" ry="5.5" fill="#241407"/>
+</svg>
+<svg class="sticker" style="top: 600px; right: 3%; width: 60px; --rot: 10deg;" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <text x="10" y="60" font-family="Bowlby One" font-size="40" fill="#E8762E">z</text>
+  <text x="40" y="40" font-family="Bowlby One" font-size="30" fill="#E8762E">z</text>
+  <text x="65" y="22" font-family="Bowlby One" font-size="22" fill="#E8762E">z</text>
+</svg>
+<svg class="sticker" style="top: 1500px; left: 2.5%; width: 64px; --rot: 6deg;" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="50" cy="55" r="32" fill="#FFFDF8" stroke="#241407" stroke-width="4"/>
+  <circle cx="26" cy="28" r="12" fill="#241407"/><circle cx="74" cy="28" r="12" fill="#241407"/>
+  <ellipse cx="35" cy="52" rx="9" ry="11" fill="#241407"/><ellipse cx="65" cy="52" rx="9" ry="11" fill="#241407"/>
+  <path d="M 28 50 Q 35 44 42 50" stroke="#FFFDF8" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M 58 50 Q 65 44 72 50" stroke="#FFFDF8" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <ellipse cx="50" cy="63" rx="6" ry="5" fill="#241407"/>
+</svg>
+<svg class="sticker" style="top: 2350px; right: 4%; width: 66px; --rot: -6deg;" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="50" cy="55" r="34" fill="#FFFDF8" stroke="#241407" stroke-width="4"/>
+  <circle cx="24" cy="26" r="13" fill="#241407"/><circle cx="76" cy="26" r="13" fill="#241407"/>
+  <ellipse cx="33" cy="52" rx="10" ry="12" fill="#241407"/><ellipse cx="67" cy="52" rx="10" ry="12" fill="#241407"/>
+  <circle cx="33" cy="50" r="3" fill="#FFFFFF"/><circle cx="67" cy="50" r="3" fill="#FFFFFF"/>
+  <ellipse cx="50" cy="64" rx="7" ry="5.5" fill="#241407"/>
+  <ellipse cx="20" cy="72" rx="8" ry="6" fill="#E8849A" opacity="0.5"/><ellipse cx="80" cy="72" rx="8" ry="6" fill="#E8849A" opacity="0.5"/>
+</svg>
+<svg class="sticker" style="top: 3150px; left: 3%; width: 58px; --rot: 12deg;" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <path d="M 50 20 C 20 20 15 50 15 65 C 15 85 30 90 50 90 C 70 90 85 85 85 65 C 85 50 80 20 50 20 Z" fill="#2E7D4F" stroke="#241407" stroke-width="3"/>
+</svg>
 
 <!-- TICKER -->
 <div class="ticker" role="region" aria-label="Daily announcements">
@@ -492,6 +649,7 @@
       <li><a href="#about">Philosophy</a></li>
       <li><a href="#routine">Routine</a></li>
       <li><a href="#rotting">Bed Rotting</a></li>
+      <li><a href="#play">Play</a></li>
       <li><a href="#quiz">Quiz</a></li>
       <li><a href="#register">Join</a></li>
     </ul>
@@ -512,8 +670,8 @@
       </p>
       <div class="btn-row">
         <a href="#quiz" class="btn btn-saffron">Take The Laziness Quiz →</a>
-        <a href="#rotting" class="btn btn-pink">Browse Bed Rotting Menu →</a>
-        <a href="#about" class="btn btn-paper">Why This Exists</a>
+        <a href="#play" class="btn btn-lilac">Play A Lazy Game →</a>
+        <a href="#rotting" class="btn btn-pink">Bed Rotting Menu →</a>
       </div>
     </div>
 
@@ -523,7 +681,7 @@
           <span>★ Official Mascot</span>
           <span>No. 001</span>
         </div>
-        <div class="side-card-art" style="background: linear-gradient(160deg, #FBEAD2 0%, #FBD9B8 100%);">
+        <div class="side-card-art">
           <svg viewBox="0 0 300 320" xmlns="http://www.w3.org/2000/svg">
             <circle cx="78" cy="62" r="38" fill="#241407"/>
             <circle cx="222" cy="62" r="38" fill="#241407"/>
@@ -622,7 +780,7 @@
       <div class="slot" data-slot="0">
         <div class="slot-time">8:00–9:00</div>
         <div class="slot-body">
-          <p class="slot-title">Wake Up. Slowly.</p>
+          <p class="slot-title">🐼 Wake Up. Slowly.</p>
           <p class="slot-sub">No alarms that scream. Open one eye, negotiate with the other.</p>
         </div>
         <button class="slot-check" aria-label="Mark Wake Up done"><span class="checkbox">✓</span></button>
@@ -631,7 +789,7 @@
       <div class="slot" data-slot="1">
         <div class="slot-time">9:00–10:30</div>
         <div class="slot-body">
-          <p class="slot-title">Snack And Stare</p>
+          <p class="slot-title">🍪 Snack And Stare</p>
           <p class="slot-sub">Breakfast in bed counts as a meal and a location decision.</p>
         </div>
         <button class="slot-check" aria-label="Mark Snack and Stare done"><span class="checkbox">✓</span></button>
@@ -640,7 +798,7 @@
       <div class="slot" data-slot="2">
         <div class="slot-time">10:30–11:00</div>
         <div class="slot-body">
-          <p class="slot-title">Nap No. 1</p>
+          <p class="slot-title">😴 Nap No. 1</p>
           <p class="slot-sub">A pre-noon nap is not laziness, it is pacing.</p>
         </div>
         <button class="slot-check" aria-label="Mark Nap 1 done"><span class="checkbox">✓</span></button>
@@ -649,7 +807,7 @@
       <div class="slot" data-slot="3">
         <div class="slot-time">12:00–1:00</div>
         <div class="slot-body">
-          <p class="slot-title">One Small Task</p>
+          <p class="slot-title">✅ One Small Task</p>
           <p class="slot-sub">Pick exactly one thing from your list. Do it. Stop there.</p>
         </div>
         <button class="slot-check" aria-label="Mark One Small Task done"><span class="checkbox">✓</span></button>
@@ -658,7 +816,7 @@
       <div class="slot" data-slot="4">
         <div class="slot-time">3:00–4:30</div>
         <div class="slot-body">
-          <p class="slot-title">Nap No. 2, The Real One</p>
+          <p class="slot-title">💤 Nap No. 2, The Real One</p>
           <p class="slot-sub">Curtains closed, phone face down, no negotiations.</p>
         </div>
         <button class="slot-check" aria-label="Mark Nap 2 done"><span class="checkbox">✓</span></button>
@@ -667,7 +825,7 @@
       <div class="slot" data-slot="5">
         <div class="slot-time">8:00–10:00</div>
         <div class="slot-body">
-          <p class="slot-title">Wind Down And Sleep</p>
+          <p class="slot-title">🌙 Wind Down And Sleep</p>
           <p class="slot-sub">Lights low, brain off, panda mode fully engaged.</p>
         </div>
         <button class="slot-check" aria-label="Mark Wind Down done"><span class="checkbox">✓</span></button>
@@ -740,22 +898,72 @@
   </div>
 </section>
 
+<!-- PLAY: GAME + PUZZLE -->
+<section id="play">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div>
+        <p class="sec-tag">Chapter Four</p>
+        <h2 class="h2">Lazy <em>Games.</em></h2>
+      </div>
+      <span class="pill">Low effort, high reward</span>
+    </div>
+
+    <p style="font-size:0.95rem; color:var(--ink-2); max-width:62ch; line-height:1.75; margin-bottom:2rem;">
+      Games for people who want to feel productive without actually being productive. No timers that pressure you, no leaderboards judging you. Just gentle little distractions.
+    </p>
+
+    <!-- GAME 1: Nap Catcher -->
+    <h3 style="font-family:var(--condensed); font-size:1.05rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:1rem;">Nap Catcher</h3>
+    <div class="game-wrap" style="margin-bottom: 3rem;">
+      <div class="game-box" id="gameBox">
+        <div class="game-hud">
+          <span>Zzz caught: <b id="gameCaught">0</b></span>
+          <span id="gameTimer">15s</span>
+        </div>
+        <div class="game-overlay" id="gameOverlay">
+          <p class="game-overlay-title">🛏️ Nap Catcher</p>
+          <p class="game-overlay-sub">Catch as many floating zzz's as you can in 15 lazy seconds. Tapping is the only effort required.</p>
+          <button class="btn btn-saffron btn-sm" id="gameStartBtn">Start Catching →</button>
+        </div>
+      </div>
+      <div class="game-side">
+        <p class="game-side-title">How To Play</p>
+        <p class="game-side-text">Click the floating zzz symbols before they drift away. That is genuinely the whole game. No skill required, just mild reflexes and a willingness to participate.</p>
+        <p class="game-best">Best score so far: <b id="gameBest">0</b></p>
+        <button class="btn btn-paper btn-sm" id="gamePlayAgainBtn" style="width:100%; justify-content:center;">Play Again →</button>
+      </div>
+    </div>
+
+    <!-- GAME 2: Memory Match -->
+    <h3 style="font-family:var(--condensed); font-size:1.05rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:1rem;">Match The Lazy Pair</h3>
+    <div class="puzzle-wrap">
+      <div class="puzzle-grid" id="puzzleGrid"></div>
+      <div class="puzzle-side">
+        <p class="game-side-title">Memory, Barely</p>
+        <div class="puzzle-stats">
+          <span>Moves: <b id="puzzleMoves">0</b></span>
+          <span>Pairs: <b id="puzzlePairs">0</b>/8</span>
+        </div>
+        <p class="puzzle-msg" id="puzzleMsg">Flip two cards to find a matching pair. There is no penalty for being slow, that is the entire point of this website.</p>
+        <button class="btn btn-lilac btn-sm" id="puzzleResetBtn" style="width:100%; justify-content:center;">Shuffle Again →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- QUIZ -->
 <section id="quiz">
   <div class="sec-inner">
     <div class="sec-head">
       <div>
-        <p class="sec-tag">Chapter Four</p>
+        <p class="sec-tag">Chapter Five</p>
         <h2 class="h2">The Laziness <em>Quiz.</em></h2>
       </div>
       <span class="pill">5 questions, no wrong answers</span>
     </div>
 
-    <div class="quiz-card" id="quizCard">
-      <div class="quiz-progress" id="quizProgress">Question 1 of 5</div>
-      <p class="quiz-question" id="quizQuestion"></p>
-      <div class="quiz-options" id="quizOptions"></div>
-    </div>
+    <div class="quiz-card" id="quizCard"></div>
   </div>
 </section>
 
@@ -764,7 +972,7 @@
   <div class="sec-inner">
     <div class="sec-head">
       <div>
-        <p class="sec-tag">Chapter Five</p>
+        <p class="sec-tag">Chapter Six</p>
         <h2 class="h2">The Lazy <em>Code.</em></h2>
       </div>
     </div>
@@ -824,7 +1032,7 @@
   <div class="sec-inner">
     <div class="sec-head">
       <div>
-        <p class="sec-tag">Chapter Six</p>
+        <p class="sec-tag">Chapter Seven</p>
         <h2 class="h2">Join The <em>Almanac.</em></h2>
       </div>
       <span class="pill">Takes thirty seconds, maybe less</span>
@@ -876,6 +1084,10 @@
           <div class="member-card-stat"><span>Preferred flavor</span><span id="cardStyle">Phone Scrolling</span></div>
           <div class="member-card-stat"><span>Status</span><span>Approved, obviously</span></div>
           <p class="member-card-id" id="cardId">Member No. 000000</p>
+          <svg class="member-card-sticker" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="55" r="34" fill="#FFFDF8" stroke="#241407" stroke-width="3"/>
+            <circle cx="24" cy="26" r="13" fill="#241407"/><circle cx="76" cy="26" r="13" fill="#241407"/>
+          </svg>
         </div>
         <div class="placeholder-note" id="formPlaceholder">
           Fill the form and press register. Your member card will appear right here, fully decorated and completely unnecessary, just like everything else on this page.
@@ -890,7 +1102,7 @@
   <div class="sec-inner">
     <div class="sec-head">
       <div>
-        <p class="sec-tag">Chapter Seven</p>
+        <p class="sec-tag">Chapter Eight</p>
         <h2 class="h2">Get In <em>Touch.</em></h2>
       </div>
     </div>
@@ -914,6 +1126,7 @@
         <a href="#about">Philosophy</a>
         <a href="#routine">Routine</a>
         <a href="#rotting">Bed Rotting</a>
+        <a href="#play">Play</a>
         <a href="#quiz">Quiz</a>
         <a href="#register">Join</a>
       </div>
@@ -935,7 +1148,9 @@
 
 <script>
 (function(){
-  /* ---------- ROUTINE TIMELINE ---------- */
+  /* =========================================================
+     ROUTINE TIMELINE
+     ========================================================= */
   const slots = Array.from(document.querySelectorAll('.slot'));
   const total = slots.length;
   const statDone = document.getElementById('statDone');
@@ -976,7 +1191,9 @@
 
   updateRoutine();
 
-  /* ---------- BED ROTTING MENU ---------- */
+  /* =========================================================
+     BED ROTTING MENU
+     ========================================================= */
   const rotCards = Array.from(document.querySelectorAll('.rot-card'));
   const rotPickLabel = document.getElementById('rotPickLabel');
 
@@ -989,7 +1206,198 @@
     });
   });
 
-  /* ---------- QUIZ ---------- */
+  /* =========================================================
+     GAME 1: NAP CATCHER
+     ========================================================= */
+  const gameBox = document.getElementById('gameBox');
+  const gameOverlay = document.getElementById('gameOverlay');
+  const gameStartBtn = document.getElementById('gameStartBtn');
+  const gamePlayAgainBtn = document.getElementById('gamePlayAgainBtn');
+  const gameCaughtEl = document.getElementById('gameCaught');
+  const gameTimerEl = document.getElementById('gameTimer');
+  const gameBestEl = document.getElementById('gameBest');
+
+  let gameRunning = false;
+  let gameCaught = 0;
+  let gameBest = 0;
+  let gameTimeLeft = 15;
+  let gameSpawnInterval = null;
+  let gameCountdownInterval = null;
+  const activeZzz = [];
+
+  function spawnZzz(){
+    if(!gameRunning) return;
+    const el = document.createElement('div');
+    el.className = 'game-zzz';
+    el.textContent = 'z';
+    const boxW = gameBox.clientWidth;
+    const boxH = gameBox.clientHeight;
+    const x = 20 + Math.random() * (boxW - 60);
+    const y = 50 + Math.random() * (boxH - 100);
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+    el.style.fontSize = (1.1 + Math.random()*1.1) + 'rem';
+    el.style.color = ['#E8762E','#E8849A','#B79FD0','#2E7D4F'][Math.floor(Math.random()*4)];
+
+    const life = setTimeout(() => {
+      if(el.parentNode) el.parentNode.removeChild(el);
+      const idx = activeZzz.indexOf(el);
+      if(idx > -1) activeZzz.splice(idx,1);
+    }, 1600);
+
+    el.addEventListener('click', () => {
+      clearTimeout(life);
+      gameCaught++;
+      gameCaughtEl.textContent = gameCaught;
+      if(el.parentNode) el.parentNode.removeChild(el);
+      const idx = activeZzz.indexOf(el);
+      if(idx > -1) activeZzz.splice(idx,1);
+    });
+
+    gameBox.appendChild(el);
+    activeZzz.push(el);
+  }
+
+  function endGame(){
+    gameRunning = false;
+    clearInterval(gameSpawnInterval);
+    clearInterval(gameCountdownInterval);
+    activeZzz.forEach(el => { if(el.parentNode) el.parentNode.removeChild(el); });
+    activeZzz.length = 0;
+
+    if(gameCaught > gameBest){
+      gameBest = gameCaught;
+      gameBestEl.textContent = gameBest;
+    }
+
+    let resultMsg = "A respectable, low effort performance.";
+    if(gameCaught >= 12) resultMsg = "Impressive reflexes for someone who claims to do nothing.";
+    else if(gameCaught <= 2) resultMsg = "You barely tried, which is honestly very on brand here.";
+
+    gameOverlay.innerHTML =
+      '<p class="game-overlay-title">⏰ Time\'s Up</p>' +
+      '<p class="game-overlay-sub">You caught ' + gameCaught + ' zzz\'s. ' + resultMsg + '</p>' +
+      '<button class="btn btn-saffron btn-sm" id="gameStartBtn2">Play Again →</button>';
+    gameOverlay.classList.remove('hidden');
+
+    document.getElementById('gameStartBtn2').addEventListener('click', startGame);
+  }
+
+  function startGame(){
+    gameOverlay.classList.add('hidden');
+    gameCaught = 0;
+    gameCaughtEl.textContent = '0';
+    gameTimeLeft = 15;
+    gameTimerEl.textContent = gameTimeLeft + 's';
+    gameRunning = true;
+
+    gameSpawnInterval = setInterval(spawnZzz, 650);
+    gameCountdownInterval = setInterval(() => {
+      gameTimeLeft--;
+      gameTimerEl.textContent = gameTimeLeft + 's';
+      if(gameTimeLeft <= 0){
+        endGame();
+      }
+    }, 1000);
+  }
+
+  gameStartBtn.addEventListener('click', startGame);
+  gamePlayAgainBtn.addEventListener('click', startGame);
+
+  /* =========================================================
+     GAME 2: MATCH THE LAZY PAIR (memory game)
+     ========================================================= */
+  const puzzleGrid = document.getElementById('puzzleGrid');
+  const puzzleMovesEl = document.getElementById('puzzleMoves');
+  const puzzlePairsEl = document.getElementById('puzzlePairs');
+  const puzzleMsgEl = document.getElementById('puzzleMsg');
+  const puzzleResetBtn = document.getElementById('puzzleResetBtn');
+
+  const puzzleEmojis = ['🐼','😴','🍪','🛏️','📺','🌙','☁️','🍩'];
+  let puzzleCards = [];
+  let puzzleFlipped = [];
+  let puzzleMoves = 0;
+  let puzzlePairs = 0;
+  let puzzleLock = false;
+
+  function shuffle(arr){
+    const a = arr.slice();
+    for(let i = a.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i+1));
+      [a[i],a[j]] = [a[j],a[i]];
+    }
+    return a;
+  }
+
+  function buildPuzzle(){
+    puzzleGrid.innerHTML = '';
+    puzzleMoves = 0;
+    puzzlePairs = 0;
+    puzzleFlipped = [];
+    puzzleLock = false;
+    puzzleMovesEl.textContent = '0';
+    puzzlePairsEl.textContent = '0';
+    puzzleMsgEl.textContent = 'Flip two cards to find a matching pair. There is no penalty for being slow, that is the entire point of this website.';
+
+    const deck = shuffle(puzzleEmojis.concat(puzzleEmojis));
+    puzzleCards = deck.map((emoji, i) => ({ id: i, emoji, matched: false }));
+
+    puzzleCards.forEach(card => {
+      const el = document.createElement('div');
+      el.className = 'puzzle-card';
+      el.dataset.id = card.id;
+      el.textContent = '';
+      el.addEventListener('click', () => onPuzzleCardClick(el, card));
+      puzzleGrid.appendChild(el);
+    });
+  }
+
+  function onPuzzleCardClick(el, card){
+    if(puzzleLock) return;
+    if(el.classList.contains('flipped') || el.classList.contains('matched')) return;
+    if(puzzleFlipped.length >= 2) return;
+
+    el.classList.add('flipped');
+    el.textContent = card.emoji;
+    puzzleFlipped.push({ el, card });
+
+    if(puzzleFlipped.length === 2){
+      puzzleMoves++;
+      puzzleMovesEl.textContent = puzzleMoves;
+      const [a, b] = puzzleFlipped;
+
+      if(a.card.emoji === b.card.emoji){
+        a.el.classList.add('matched');
+        b.el.classList.add('matched');
+        puzzlePairs++;
+        puzzlePairsEl.textContent = puzzlePairs;
+        puzzleFlipped = [];
+
+        if(puzzlePairs === puzzleEmojis.length){
+          let msg = 'All pairs found in ' + puzzleMoves + ' moves. Magnificent, considering the effort level around here.';
+          if(puzzleMoves <= 10) msg = 'All pairs found in just ' + puzzleMoves + ' moves. Suspiciously good memory for someone this relaxed.';
+          puzzleMsgEl.textContent = msg;
+        }
+      } else {
+        puzzleLock = true;
+        setTimeout(() => {
+          a.el.classList.remove('flipped');
+          b.el.classList.remove('flipped');
+          a.el.textContent = '';
+          b.el.textContent = '';
+          puzzleFlipped = [];
+          puzzleLock = false;
+        }, 700);
+      }
+    }
+  }
+
+  puzzleResetBtn.addEventListener('click', buildPuzzle);
+  buildPuzzle();
+
+  /* =========================================================
+     QUIZ
+     ========================================================= */
   const quizData = [
     {
       q: "It is 11am on a free day. What is happening right now?",
@@ -1040,24 +1448,34 @@
 
   let quizIndex = 0;
   let quizScore = 0;
-
   const quizCard = document.getElementById('quizCard');
-  const quizProgress = document.getElementById('quizProgress');
-  const quizQuestion = document.getElementById('quizQuestion');
-  const quizOptions = document.getElementById('quizOptions');
+
+  function renderDots(){
+    let html = '<div class="quiz-dots">';
+    for(let i = 0; i < quizData.length; i++){
+      let cls = 'quiz-dot';
+      if(i < quizIndex) cls += ' filled';
+      else if(i === quizIndex) cls += ' active';
+      html += '<span class="' + cls + '"></span>';
+    }
+    html += '</div>';
+    return html;
+  }
 
   function renderQuestion(){
     const current = quizData[quizIndex];
-    quizProgress.textContent = 'Question ' + (quizIndex + 1) + ' of ' + quizData.length;
-    quizQuestion.textContent = current.q;
-    quizOptions.innerHTML = '';
+    let html = renderDots();
+    html += '<p class="quiz-question">' + current.q + '</p>';
+    html += '<div class="quiz-options">';
+    current.opts.forEach((opt, i) => {
+      html += '<button class="quiz-option" data-pts="' + opt.pts + '">' + opt.text + '</button>';
+    });
+    html += '</div>';
+    quizCard.innerHTML = html;
 
-    current.opts.forEach(opt => {
-      const b = document.createElement('button');
-      b.className = 'quiz-option';
-      b.textContent = opt.text;
-      b.addEventListener('click', () => {
-        quizScore += opt.pts;
+    Array.from(quizCard.querySelectorAll('.quiz-option')).forEach(btn => {
+      btn.addEventListener('click', () => {
+        quizScore += Number(btn.dataset.pts);
         quizIndex++;
         if(quizIndex < quizData.length){
           renderQuestion();
@@ -1065,7 +1483,6 @@
           renderResult();
         }
       });
-      quizOptions.appendChild(b);
     });
   }
 
@@ -1097,62 +1514,52 @@
     }
   }
 
+  function spawnConfetti(container){
+    const emojis = ['🎉','💤','🐼','✨','🍪'];
+    let html = '<div class="confetti">';
+    for(let i = 0; i < 16; i++){
+      const left = Math.random() * 100;
+      const delay = Math.random() * 0.4;
+      const dur = 1.4 + Math.random() * 0.8;
+      const emoji = emojis[Math.floor(Math.random()*emojis.length)];
+      html += '<span style="left:' + left + '%; animation-duration:' + dur + 's; animation-delay:' + delay + 's;">' + emoji + '</span>';
+    }
+    html += '</div>';
+    container.insertAdjacentHTML('beforeend', html);
+    setTimeout(() => {
+      const c = container.querySelector('.confetti');
+      if(c) c.remove();
+    }, 2600);
+  }
+
   function renderResult(){
     const profile = getResultProfile(quizScore);
     quizCard.innerHTML =
       '<div class="quiz-result">' +
         '<div class="quiz-badge">' + profile.emoji + '</div>' +
+        '<p class="quiz-score">SCORE: ' + quizScore + ' / 20</p>' +
         '<p class="quiz-title">' + profile.title + '</p>' +
         '<p class="quiz-message">' + profile.message + '</p>' +
         '<div class="quiz-actions">' +
           '<button class="btn btn-saffron" id="quizRetry">Take It Again →</button>' +
-          '<a href="#register" class="btn btn-paper">Register With This Score →</a>' +
+          '<a href="#register" class="btn btn-paper">Register Now →</a>' +
         '</div>' +
       '</div>';
+
+    spawnConfetti(quizCard);
 
     document.getElementById('quizRetry').addEventListener('click', () => {
       quizIndex = 0;
       quizScore = 0;
-      quizCard.innerHTML =
-        '<div class="quiz-progress" id="quizProgress"></div>' +
-        '<p class="quiz-question" id="quizQuestion"></p>' +
-        '<div class="quiz-options" id="quizOptions"></div>';
-      // re-grab refs since innerHTML replaced them
-      window.__reinitQuiz();
+      renderQuestion();
     });
   }
 
-  // expose a tiny reinit so the retry button can re-bind fresh DOM nodes
-  window.__reinitQuiz = function(){
-    const qp = document.getElementById('quizProgress');
-    const qq = document.getElementById('quizQuestion');
-    const qo = document.getElementById('quizOptions');
-    // reassign module-level refs by closures is awkward here, so just re-run renderQuestion
-    // using the freshly queried nodes via a small local override
-    const current = quizData[quizIndex];
-    qp.textContent = 'Question ' + (quizIndex + 1) + ' of ' + quizData.length;
-    qq.textContent = current.q;
-    qo.innerHTML = '';
-    current.opts.forEach(opt => {
-      const b = document.createElement('button');
-      b.className = 'quiz-option';
-      b.textContent = opt.text;
-      b.addEventListener('click', () => {
-        quizScore += opt.pts;
-        quizIndex++;
-        if(quizIndex < quizData.length){
-          window.__reinitQuiz();
-        } else {
-          renderResult();
-        }
-      });
-      qo.appendChild(b);
-    });
-  };
-
   renderQuestion();
 
-  /* ---------- REGISTRATION ---------- */
+  /* =========================================================
+     REGISTRATION
+     ========================================================= */
   const fieldHours = document.getElementById('fieldHours');
   const fieldHoursVal = document.getElementById('fieldHoursVal');
   fieldHours.addEventListener('input', () => {
